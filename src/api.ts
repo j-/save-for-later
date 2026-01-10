@@ -94,3 +94,18 @@ export const useListItems = (options?: ListItemsOptions) => {
     ...options,
   });
 };
+
+export type DeleteItemVariables = [id: string];
+export type DeleteItemOptions = Exclude<MutationOptions<void, unknown, DeleteItemVariables>, 'mutationFn'>;
+
+export const useDeleteItem = (options?: DeleteItemOptions) => {
+  return useMutation<void, unknown, DeleteItemVariables>({
+    mutationFn: async ([id]) => {
+      await db.delete(STORE_NAME_ITEMS, id);
+    },
+    onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
+      await ctx.client.invalidateQueries({ queryKey: ['listItems'] });
+    },
+    ...options,
+  });
+};
