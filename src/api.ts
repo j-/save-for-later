@@ -8,12 +8,14 @@ export const STORE_NAME_ITEMS = 'items';
 
 export const FIELD_ITEMS_ID = 'id';
 export const FIELD_ITEMS_DATA = 'data';
-export const FIELD_ITEMS_TIMESTAMP = 'timestamp';
+export const FIELD_ITEMS_DATE_ADDED = 'dateAdded';
+export const FIELD_ITEMS_DATE_LAPSED = 'dateLapsed';
 
 export interface StoreItem {
   [FIELD_ITEMS_ID]: string;
   [FIELD_ITEMS_DATA]: ShareData;
-  [FIELD_ITEMS_TIMESTAMP]: Date;
+  [FIELD_ITEMS_DATE_ADDED]: Date;
+  [FIELD_ITEMS_DATE_LAPSED]: Date;
 }
 
 interface SaveForLaterDB extends DBSchema {
@@ -21,7 +23,8 @@ interface SaveForLaterDB extends DBSchema {
     value: StoreItem;
     key: string;
     indexes: {
-      [FIELD_ITEMS_TIMESTAMP]: number;
+      [FIELD_ITEMS_DATE_ADDED]: number;
+      [FIELD_ITEMS_DATE_LAPSED]: number;
     };
   };
 }
@@ -33,7 +36,8 @@ const initDB = () => (
         keyPath: FIELD_ITEMS_ID,
       });
 
-      store.createIndex(FIELD_ITEMS_TIMESTAMP, FIELD_ITEMS_TIMESTAMP);
+      store.createIndex(FIELD_ITEMS_DATE_ADDED, FIELD_ITEMS_DATE_ADDED);
+      store.createIndex(FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_DATE_LAPSED);
     },
   })
 );
@@ -56,16 +60,18 @@ export const useClearDatabase = (options?: ClearDatabaseOptions) => {
   });
 };
 
-export type AddItemVariables = [data: ShareData, timestamp: Date];
+export type AddItemVariables = [data: ShareData, dateLapsed: Date];
 export type AddItemOptions = Exclude<MutationOptions<StoreItem, unknown, AddItemVariables>, 'mutationFn'>;
 
 export const useAddItem = (options?: AddItemOptions) => {
   return useMutation<StoreItem, unknown, AddItemVariables>({
-    mutationFn: async ([data, timestamp]) => {
+    mutationFn: async ([data, dateLapsed]) => {
+      const dateAdded = new Date();
       const payload: StoreItem = {
         id: crypto.randomUUID(),
         data,
-        timestamp,
+        dateAdded,
+        dateLapsed,
       };
       await db.add(STORE_NAME_ITEMS, payload);
       return payload;
@@ -83,7 +89,7 @@ export const useListItems = (options?: ListItemsOptions) => {
   return useQuery<StoreItem[], unknown, StoreItem[]>({
     queryKey: ['listItems'],
     queryFn: async () => {
-      return await db.getAllFromIndex(STORE_NAME_ITEMS, FIELD_ITEMS_TIMESTAMP);
+      return await db.getAllFromIndex(STORE_NAME_ITEMS, FIELD_ITEMS_DATE_LAPSED);
     },
     ...options,
   });
