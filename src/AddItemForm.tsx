@@ -55,6 +55,17 @@ export const AddItemForm: FC = () => {
         label="What do you want to remember?"
         autoComplete="off"
         fullWidth
+        multiline
+        autoFocus
+        minRows={3}
+        maxRows={5}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && e.metaKey) {
+            const input = e.target as HTMLTextAreaElement;
+            const form = input.form;
+            form?.requestSubmit();
+          }
+        }}
         slotProps={{
           inputLabel: {
             shrink: watch('text') != '',
