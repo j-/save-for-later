@@ -43,6 +43,7 @@ export const AddItemForm: FC = () => {
       interval: AddItemInterval.DAYS,
     },
     resolver: zodResolver(AddItemFormSchema),
+    shouldFocusError: true,
   });
 
   const {
@@ -88,35 +89,36 @@ export const AddItemForm: FC = () => {
         <Controller
           name="text"
           control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              label="What do you want to remember?"
-              autoComplete="off"
-              fullWidth
-              multiline
-              autoFocus
-              minRows={3}
-              maxRows={5}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && e.metaKey) {
-                  const input = e.target as HTMLTextAreaElement;
-                  const form = input.form;
-                  form?.requestSubmit();
-                }
-              }}
-              error={fieldState.error != null}
-              title={fieldState.error?.message}
-              slotProps={{
-                inputLabel: {
-                  shrink: field.value != '',
-                },
-                htmlInput: {
-                  ref: field.ref,
-                },
-              }}
-              {...field}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const { ref, ...fieldProps } = field;
+            return (
+              <TextField
+                label="What do you want to remember?"
+                autoComplete="off"
+                fullWidth
+                multiline
+                autoFocus
+                minRows={3}
+                maxRows={5}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.metaKey) {
+                    const input = e.target as HTMLTextAreaElement;
+                    const form = input.form;
+                    form?.requestSubmit();
+                  }
+                }}
+                error={fieldState.error != null}
+                title={fieldState.error?.message}
+                inputRef={ref}
+                slotProps={{
+                  inputLabel: {
+                    shrink: field.value != '',
+                  },
+                }}
+                {...fieldProps}
+              />
+            );
+          }}
         />
 
         <Stack component="fieldset" gap={2} direction="row" sx={{
@@ -129,21 +131,20 @@ export const AddItemForm: FC = () => {
             <Controller
               name="count"
               control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  type="number"
-                  placeholder="1"
-                  size="small"
-                  error={fieldState.error != null}
-                  title={fieldState.error?.message}
-                  slotProps={{
-                    htmlInput: {
-                      ref: field.ref,
-                    },
-                  }}
-                  {...field}
-                />
-              )}
+              render={({ field, fieldState }) => {
+                const { ref, ...fieldProps } = field;
+                return (
+                  <TextField
+                    type="number"
+                    placeholder="1"
+                    size="small"
+                    error={fieldState.error != null}
+                    title={fieldState.error?.message}
+                    inputRef={ref}
+                    {...fieldProps}
+                  />
+                );
+              }}
             />
           </FormControl>
 
@@ -151,20 +152,24 @@ export const AddItemForm: FC = () => {
             <Controller
               name="interval"
               control={control}
-              render={({ field, fieldState }) => (
-                <Select
-                  size="small"
-                  error={fieldState.error != null}
-                  title={fieldState.error?.message}
-                  {...field}
-                >
-                  <MenuItem value={AddItemInterval.DAYS}>Day(s)</MenuItem>
-                  <MenuItem value={AddItemInterval.WEEKS}>Week(s)</MenuItem>
-                  <MenuItem value={AddItemInterval.MONTHS}>Month(s)</MenuItem>
-                  <MenuItem value={AddItemInterval.YEARS}>Year(s)</MenuItem>
-                  {/* <MenuItem value={AddItemInterval.CUSTOM}>Custom&hellip;</MenuItem> */}
-                </Select>
-              )}
+              render={({ field, fieldState }) => {
+                const { ref, ...fieldProps } = field;
+                return (
+                  <Select
+                    size="small"
+                    error={fieldState.error != null}
+                    title={fieldState.error?.message}
+                    inputRef={ref}
+                    {...fieldProps}
+                  >
+                    <MenuItem value={AddItemInterval.DAYS}>Day(s)</MenuItem>
+                    <MenuItem value={AddItemInterval.WEEKS}>Week(s)</MenuItem>
+                    <MenuItem value={AddItemInterval.MONTHS}>Month(s)</MenuItem>
+                    <MenuItem value={AddItemInterval.YEARS}>Year(s)</MenuItem>
+                    {/* <MenuItem value={AddItemInterval.CUSTOM}>Custom&hellip;</MenuItem> */}
+                  </Select>
+                );
+              }}
             />
           </FormControl>
         </Stack>
