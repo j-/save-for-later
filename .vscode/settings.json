@@ -1,0 +1,6 @@
+{
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/@mui/material/esm/index.d.ts",
+    "**/node_modules/@mui/icons-material/esm/index.d.ts",
+  ]
+}
