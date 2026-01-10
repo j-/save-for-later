@@ -1,5 +1,5 @@
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import {
@@ -21,7 +21,7 @@ export const StoreItemView: FC<StoreItemViewProps> = ({ item }) => {
   } = useDeleteItem();
 
   return (
-    <Box>
+    <Paper sx={{ p: 2 }}>
       <Typography component="pre" fontWeight="bold" fontFamily="monospace">
         {JSON.stringify(item[FIELD_ITEMS_DATA], null, 2)}
       </Typography>
@@ -46,6 +46,6 @@ export const StoreItemView: FC<StoreItemViewProps> = ({ item }) => {
       >
         Delete
       </Button>
-    </Box>
+    </Paper>
   );
 };

@@ -13,11 +13,11 @@ import z from 'zod';
 import { useAddItem, useClearDatabase } from './api';
 
 export enum AddItemInterval {
-  CUSTOM = 'c',
-  DAYS ='d',
-  WEEKS = 'w',
-  MONTHS = 'm',
-  YEARS = 'y',
+  CUSTOM,
+  DAYS,
+  WEEKS,
+  MONTHS,
+  YEARS,
 }
 
 export const AddItemFormSchema = z.object({
@@ -25,12 +25,12 @@ export const AddItemFormSchema = z.object({
   text: z.string().trim().nonempty().optional(),
   url: z.url().nonempty().optional(),
   files: z.array(z.file()).optional(),
-  count: z.number().min(1),
+  count: z.coerce.number().int().min(1),
   interval: z.enum(AddItemInterval),
 });
 
 export type AddItemFormInput = z.input<typeof AddItemFormSchema>;
-export type AddItemFormOutput = z.input<typeof AddItemFormSchema>;
+export type AddItemFormOutput = z.output<typeof AddItemFormSchema>;
 
 export const AddItemForm: FC = () => {
   const {
@@ -105,6 +105,7 @@ export const AddItemForm: FC = () => {
                 }
               }}
               error={fieldState.error != null}
+              title={fieldState.error?.message}
               slotProps={{
                 inputLabel: {
                   shrink: field.value != '',
@@ -134,6 +135,7 @@ export const AddItemForm: FC = () => {
                   placeholder="1"
                   size="small"
                   error={fieldState.error != null}
+                  title={fieldState.error?.message}
                   slotProps={{
                     htmlInput: {
                       ref: field.ref,
@@ -153,6 +155,7 @@ export const AddItemForm: FC = () => {
                 <Select
                   size="small"
                   error={fieldState.error != null}
+                  title={fieldState.error?.message}
                   {...field}
                 >
                   <MenuItem value={AddItemInterval.DAYS}>Day(s)</MenuItem>
