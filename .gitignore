@@ -1,0 +1,7 @@
+.cache
+.DS_Store
+*.local
+*.tgz
+*.tsbuildinfo
+dist
+node_modules
