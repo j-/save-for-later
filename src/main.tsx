@@ -1,9 +1,10 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { queryClient } from './api';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 import { Router } from './Router';
 import { theme } from './theme';
@@ -28,7 +29,6 @@ Sentry.init({
   enableLogs: true,
 });
 
-const queryClient = new QueryClient();
 const ProfiledRouter = Sentry.withProfiler(Router);
 
 const elem = document.getElementById('root')!;

@@ -1,4 +1,8 @@
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
+import {
+  mutationOptions,
+  QueryClient,
+  queryOptions,
+} from '@tanstack/react-query';
 import {
   addItem,
   clearDatabase,
@@ -9,6 +13,8 @@ import {
 import type { StoreItem } from './shared/types';
 
 export * from './shared/types';
+
+export const queryClient = new QueryClient();
 
 export const addItemOptions = mutationOptions<StoreItem, unknown, Parameters<typeof addItem>>({
   mutationFn: async ([data, dateLapsed]) => {
