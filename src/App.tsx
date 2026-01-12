@@ -1,22 +1,20 @@
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
+import {
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import type { FC } from 'react';
-import { AddItemForm } from './AddItemForm';
-import { StoreItemListView } from './StoreItemListView';
+import { RouteIndex } from './RouteIndex';
 
-export const App: FC = () => {
-  return (
-    <Box mx="auto" my={4} p={2} maxWidth="70ch">
-      <Stack gap={2}>
-        <AddItemForm />
+const rootRoute = createRootRoute();
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/',
+  component: () => <RouteIndex />,
+});
 
-        <Divider />
+const routeTree = rootRoute.addChildren([indexRoute]);
+const router = createRouter({ routeTree });
 
-        <Box>
-          <StoreItemListView />
-        </Box>
-      </Stack>
-    </Box>
-  );
-};
+export const App: FC = () => <RouterProvider router={router} />;

@@ -29,8 +29,8 @@ Sentry.init({
 });
 
 const queryClient = new QueryClient();
-
 const ProfiledApp = Sentry.withProfiler(App);
+
 
 const elem = document.getElementById('root')!;
 const app = (
