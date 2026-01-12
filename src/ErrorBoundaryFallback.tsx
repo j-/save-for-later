@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { FallbackRender } from '@sentry/react';
+import { clearDatabase } from './shared/db';
 
 export const ErrorBoundaryFallback: FallbackRender = ({
   error,
@@ -38,8 +39,8 @@ export const ErrorBoundaryFallback: FallbackRender = ({
         <Button
           variant="outlined"
           color="error"
-          onClick={() => {
-            alert('Not implemented');
+          onClick={async () => {
+            await clearDatabase();
             // @ts-expect-error Force reload.
             window.location.reload(true);
           }}
