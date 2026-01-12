@@ -5,6 +5,7 @@
 // 1) SPA build (HTML entry)
 try {
   const result = await Bun.build({
+    publicPath: '/',
     entrypoints: ['./src/index.html'],
     outdir: './dist',
     target: 'browser',
@@ -34,6 +35,7 @@ try {
 // not `dist/src/service-worker.js`, which matters for scope + your Nginx rule.
 try {
   const result = await Bun.build({
+    publicPath: '/',
     entrypoints: ['./src/service-worker.ts'],
     outdir: './dist',
     target: 'browser',

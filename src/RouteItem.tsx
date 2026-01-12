@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { FC } from 'react';
-import { itemIdRoute } from './Router';
-import { useGetItem } from './api';
-import { StoreItemView } from './StoreItemView';
 import { useNavigate } from '@tanstack/react-router';
+import type { FC } from 'react';
+import { useGetItem } from './api';
+import { itemIdRoute } from './Router';
+import { StoreItemView } from './StoreItemView';
 
 export const RouteItem: FC = () => {
   const { itemId } = itemIdRoute.useParams();
