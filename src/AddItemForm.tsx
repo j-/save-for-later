@@ -180,7 +180,7 @@ export const AddItemForm: FC = () => {
           </Button>
 
           <Button color="error" onClick={async () => {
-            await clearDatabase();
+            await clearDatabase([]);
             reset();
           }}>
             Clear database

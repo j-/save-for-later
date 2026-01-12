@@ -1,57 +1,21 @@
-import { useMutation, useQuery, type MutationOptions, type QueryOptions } from '@tanstack/react-query';
-import { deleteDB, openDB, type DBSchema } from 'idb';
+import {
+  useMutation,
+  useQuery,
+  type MutationOptions,
+  type QueryOptions,
+} from '@tanstack/react-query';
+import { addItem, clearDatabase, deleteItem, listItems } from './shared/db';
+import type { StoreItem } from './shared/types';
 
-export const DB_NAME = 'save-for-later';
-export const DB_VERSION = 1;
+export * from './shared/types';
 
-export const STORE_NAME_ITEMS = 'items';
-
-export const FIELD_ITEMS_ID = 'id';
-export const FIELD_ITEMS_DATA = 'data';
-export const FIELD_ITEMS_DATE_ADDED = 'dateAdded';
-export const FIELD_ITEMS_DATE_LAPSED = 'dateLapsed';
-
-export interface StoreItem {
-  [FIELD_ITEMS_ID]: string;
-  [FIELD_ITEMS_DATA]: ShareData;
-  [FIELD_ITEMS_DATE_ADDED]: Date;
-  [FIELD_ITEMS_DATE_LAPSED]: Date;
-}
-
-interface SaveForLaterDB extends DBSchema {
-  [STORE_NAME_ITEMS]: {
-    value: StoreItem;
-    key: string;
-    indexes: {
-      [FIELD_ITEMS_DATE_ADDED]: number;
-      [FIELD_ITEMS_DATE_LAPSED]: number;
-    };
-  };
-}
-
-const initDB = () => (
-  openDB<SaveForLaterDB>(DB_NAME, DB_VERSION, {
-    upgrade(db, _oldVersion, _newVersion, _transaction, _event) {
-      const store = db.createObjectStore(STORE_NAME_ITEMS, {
-        keyPath: FIELD_ITEMS_ID,
-      });
-
-      store.createIndex(FIELD_ITEMS_DATE_ADDED, FIELD_ITEMS_DATE_ADDED);
-      store.createIndex(FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_DATE_LAPSED);
-    },
-  })
-);
-
-let db = await initDB();
-
-export type ClearDatabaseOptions = Exclude<MutationOptions<void, unknown, void>, 'mutationFn'>;
+export type ClearDatabaseParameters = Parameters<typeof clearDatabase>;
+export type ClearDatabaseOptions = Exclude<MutationOptions<void, unknown, ClearDatabaseParameters>, 'mutationFn'>;
 
 export const useClearDatabase = (options?: ClearDatabaseOptions) => {
   return useMutation({
     mutationFn: async () => {
-      db.close();
-      await deleteDB(DB_NAME);
-      db = await initDB();
+      return clearDatabase();
     },
     onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
       await ctx.client.invalidateQueries();
@@ -60,21 +24,13 @@ export const useClearDatabase = (options?: ClearDatabaseOptions) => {
   });
 };
 
-export type AddItemVariables = [data: ShareData, dateLapsed: Date];
-export type AddItemOptions = Exclude<MutationOptions<StoreItem, unknown, AddItemVariables>, 'mutationFn'>;
+export type AddItemParameters = Parameters<typeof addItem>;
+export type AddItemOptions = Exclude<MutationOptions<StoreItem, unknown, AddItemParameters>, 'mutationFn'>;
 
 export const useAddItem = (options?: AddItemOptions) => {
-  return useMutation<StoreItem, unknown, AddItemVariables>({
+  return useMutation<StoreItem, unknown, AddItemParameters>({
     mutationFn: async ([data, dateLapsed]) => {
-      const dateAdded = new Date();
-      const payload: StoreItem = {
-        id: crypto.randomUUID(),
-        data,
-        dateAdded,
-        dateLapsed,
-      };
-      await db.add(STORE_NAME_ITEMS, payload);
-      return payload;
+      return addItem(data, dateLapsed);
     },
     onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
       await ctx.client.invalidateQueries({ queryKey: ['listItems'] });
@@ -89,19 +45,19 @@ export const useListItems = (options?: ListItemsOptions) => {
   return useQuery<StoreItem[], unknown, StoreItem[]>({
     queryKey: ['listItems'],
     queryFn: async () => {
-      return await db.getAllFromIndex(STORE_NAME_ITEMS, FIELD_ITEMS_DATE_LAPSED);
+      return listItems();
     },
     ...options,
   });
 };
 
-export type DeleteItemVariables = [id: string];
+export type DeleteItemVariables = Parameters<typeof deleteItem>;
 export type DeleteItemOptions = Exclude<MutationOptions<void, unknown, DeleteItemVariables>, 'mutationFn'>;
 
 export const useDeleteItem = (options?: DeleteItemOptions) => {
   return useMutation<void, unknown, DeleteItemVariables>({
     mutationFn: async ([id]) => {
-      await db.delete(STORE_NAME_ITEMS, id);
+      return deleteItem(id);
     },
     onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
       await ctx.client.invalidateQueries({ queryKey: ['listItems'] });

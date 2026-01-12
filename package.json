@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun --hot src/index.ts",
-    "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
+    "build": "bun run scripts/build.ts",
+    "postbuild": "sentry-cli sourcemaps inject --org j-hj --project save-for-later ./dist && sentry-cli sourcemaps upload --org j-hj --project save-for-later ./dist",
     "start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {
@@ -15,6 +16,8 @@
     "@hookform/resolvers": "^5.2.2",
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
+    "@sentry/cli": "^2",
+    "@sentry/react": "^10.32.1",
     "@tanstack/react-query": "^5.90.16",
     "date-fns": "^4.1.0",
     "idb": "^8.0.3",
