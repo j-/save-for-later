@@ -12,14 +12,18 @@ import {
   type StoreItem
 } from './api';
 import { Link } from './Link';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 export type StoreItemViewProps = {
   item: StoreItem;
+  canDelete?: boolean;
   onAfterDeleteItem?: () => void | Promise<void>;
 };
 
 export const StoreItemView: FC<StoreItemViewProps> = ({
   item,
+  canDelete = false,
   onAfterDeleteItem,
 }) => {
   const {
@@ -27,35 +31,44 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
   } = useMutation(deleteItemOptions);
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography component="pre" fontWeight="bold" fontFamily="monospace">
-        {JSON.stringify(item[FIELD_ITEMS_DATA], null, 2)}
-      </Typography>
+    <Paper elevation={0} sx={{ p: 2 }}>
+      <Stack gap={2}>
+        <Box>
+          <Typography component="pre" fontWeight="bold" fontFamily="monospace">
+            {JSON.stringify(item[FIELD_ITEMS_DATA], null, 2)}
+          </Typography>
 
-      <Typography fontStyle="italic">
-        <Link to="/item/$itemId" params={{ itemId: item[FIELD_ITEMS_ID] }}>
-          {item[FIELD_ITEMS_ID]}
-        </Link>
-      </Typography>
+          <Typography fontStyle="italic">
+            <Link to="/item/$itemId" params={{ itemId: item[FIELD_ITEMS_ID] }}>
+              {item[FIELD_ITEMS_ID]}
+            </Link>
+          </Typography>
 
-      <Typography>
-        Added: {item[FIELD_ITEMS_DATE_ADDED].toISOString()}
-      </Typography>
+          <Typography>
+            Added: {item[FIELD_ITEMS_DATE_ADDED].toISOString()}
+          </Typography>
 
-      <Typography>
-        Reminder: {item[FIELD_ITEMS_DATE_LAPSED].toISOString()}
-      </Typography>
+          <Typography>
+            Reminder: {item[FIELD_ITEMS_DATE_LAPSED].toISOString()}
+          </Typography>
+        </Box>
 
-      <Button
-        color="error"
-        onClick={async () => {
-          await deleteItem([item[FIELD_ITEMS_ID]], {
-            onSuccess: onAfterDeleteItem,
-          });
-        }}
-      >
-        Delete
-      </Button>
+        <Stack gap={2} direction="row">
+          {canDelete && (
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={async () => {
+                await deleteItem([item[FIELD_ITEMS_ID]], {
+                  onSuccess: onAfterDeleteItem,
+                });
+              }}
+            >
+              Delete
+            </Button>
+          )}
+        </Stack>
+      </Stack>
     </Paper>
   );
 };

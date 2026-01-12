@@ -8,16 +8,14 @@ export const RouteNotFound: FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <Box mx="auto" my={4} p={2} maxWidth="70ch">
-      <Stack gap={2}>
-        <Typography fontFamily="monospace">
-          {pathname}
-        </Typography>
+    <Stack gap={2}>
+      <Typography fontFamily="monospace">
+        {pathname}
+      </Typography>
 
-        <Typography component="h1" variant="h4">
-          Not found
-        </Typography>
-      </Stack>
-    </Box>
+      <Typography component="h1" variant="h4">
+        Not found
+      </Typography>
+    </Stack>
   );
 };

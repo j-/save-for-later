@@ -1,14 +1,17 @@
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { getItemOptions } from './api';
+import { LinkButton } from './Link';
 import { itemIdRoute } from './Router';
 import { StoreItemView } from './StoreItemView';
 
 export const RouteItem: FC = () => {
+  const { pathname } = useLocation();
   const { itemId } = itemIdRoute.useParams();
   const navigate = useNavigate();
 
@@ -26,17 +29,26 @@ export const RouteItem: FC = () => {
   }
 
   return (
-    <Box mx="auto" my={4} p={2} maxWidth="70ch">
-      <Stack gap={2}>
-        <Typography fontFamily="monospace">
-          {itemId}
-        </Typography>
+    <Stack gap={2}>
+      <Box>
+        <LinkButton
+          to="/"
+          variant="outlined"
+          startIcon={<ChevronLeft />}
+        >
+          All items
+        </LinkButton>
+      </Box>
 
-        <StoreItemView
-          item={item}
-          onAfterDeleteItem={() => navigate({ to: '/' })}
-        />
-      </Stack>
-    </Box>
+      <Typography fontFamily="monospace">
+        {pathname}
+      </Typography>
+
+      <StoreItemView
+        item={item}
+        canDelete
+        onAfterDeleteItem={() => navigate({ to: '/' })}
+      />
+    </Stack>
   );
 };

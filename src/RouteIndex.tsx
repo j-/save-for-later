@@ -11,20 +11,18 @@ export const RouteIndex: FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <Box mx="auto" my={4} p={2} maxWidth="70ch">
-      <Stack gap={2}>
-        <Typography fontFamily="monospace">
-          {pathname}
-        </Typography>
+    <Stack gap={2}>
+      <Typography fontFamily="monospace">
+        {pathname}
+      </Typography>
 
-        <AddItemForm />
+      <AddItemForm />
 
-        <Divider />
+      <Divider />
 
-        <Box>
-          <StoreItemListView />
-        </Box>
-      </Stack>
-    </Box>
+      <Box>
+        <StoreItemListView />
+      </Box>
+    </Stack>
   );
 };

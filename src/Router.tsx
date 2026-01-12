@@ -13,6 +13,7 @@ import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 import { RouteIndex } from './RouteIndex';
 import { RouteItem } from './RouteItem';
 import { RouteNotFound } from './RouteNotFound';
+import Paper from '@mui/material/Paper';
 
 const rootRoute = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -27,10 +28,10 @@ const rootRoute = createRootRouteWithContext<{
     />
   ),
   component: () => (
-    <>
+    <Paper sx={{ mx: 'auto', my: 4, p: 2, maxWidth: '70ch' }}>
       <Outlet />
       <TanStackRouterDevtools />
-    </>
+    </Paper>
   ),
 });
 
