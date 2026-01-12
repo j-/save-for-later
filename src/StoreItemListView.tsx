@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import { useMemo, type FC } from 'react';
 import { FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_ID, useListItems } from './api';
-import { StoreItemView } from './StoreItemView';
+import { StoreItemViewWithErrorBoundary } from './StoreItemViewWithErrorBoundary';
 
 export const StoreItemListView: FC = () => {
   const {
@@ -33,7 +33,7 @@ export const StoreItemListView: FC = () => {
     <Stack gap={1}>
       {lapsedBeforeNow?.map((item, i) => (
         <Box key={item[FIELD_ITEMS_ID]}>
-          <StoreItemView item={item} />
+          <StoreItemViewWithErrorBoundary item={item} />
         </Box>
       ))}
 
@@ -47,7 +47,7 @@ export const StoreItemListView: FC = () => {
 
       {lapsesAfterNow?.map((item, i) => (
         <Box key={item[FIELD_ITEMS_ID]}>
-          <StoreItemView item={item} />
+          <StoreItemViewWithErrorBoundary item={item} />
         </Box>
       ))}
     </Stack>
