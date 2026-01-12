@@ -22,7 +22,7 @@ export const addItemOptions = mutationOptions<StoreItem, unknown, Parameters<typ
   },
   onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
     await ctx.client.invalidateQueries({
-      queryKey: ['listItems'],
+      queryKey: listItemsQueryKey(),
     });
   },
 });
@@ -42,20 +42,24 @@ export const deleteItemOptions = mutationOptions<void, unknown, Parameters<typeo
   },
   onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
     await ctx.client.invalidateQueries({
-      queryKey: ['listItems'],
+      queryKey: listItemsQueryKey(),
     });
   },
 });
 
+export const getItemQueryKey = (id: string) => ['item', { id }] as const;
+
 export const getItemOptions = (id: string) => queryOptions({
-  queryKey: ['item', { id }],
+  queryKey: getItemQueryKey(id),
   queryFn: async () => {
     return getItem(id);
   },
 });
 
+export const listItemsQueryKey = () => ['listItems'] as const;
+
 export const listItemsOptions = queryOptions({
-  queryKey: ['listItems'],
+  queryKey: listItemsQueryKey(),
   queryFn: async () => {
     return listItems();
   },
