@@ -53,6 +53,15 @@ export const deleteItem = async (id: string): Promise<void> => {
   await db.delete(STORE_NAME_ITEMS, id);
 };
 
+export const getItem = async (id: string): Promise<StoreItem> => {
+  const db = await getDB();
+  const payload = await db.get(STORE_NAME_ITEMS, id);
+  if (!payload) {
+    throw new Error(`Could not find item with ID "${id}"`);
+  }
+  return payload;
+};
+
 export const listItems = async (): Promise<StoreItem[]> => {
   const db = await getDB();
   return await db.getAllFromIndex(STORE_NAME_ITEMS, FIELD_ITEMS_DATE_LAPSED);

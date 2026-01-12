@@ -13,9 +13,13 @@ import {
 
 export type StoreItemViewProps = {
   item: StoreItem;
+  onAfterDeleteItem?: () => void | Promise<void>;
 };
 
-export const StoreItemView: FC<StoreItemViewProps> = ({ item }) => {
+export const StoreItemView: FC<StoreItemViewProps> = ({
+  item,
+  onAfterDeleteItem,
+}) => {
   const {
     mutateAsync: deleteItem,
   } = useDeleteItem();
@@ -41,7 +45,9 @@ export const StoreItemView: FC<StoreItemViewProps> = ({ item }) => {
       <Button
         color="error"
         onClick={async () => {
-          await deleteItem([item[FIELD_ITEMS_ID]]);
+          await deleteItem([item[FIELD_ITEMS_ID]], {
+            onSuccess: onAfterDeleteItem,
+          });
         }}
       >
         Delete

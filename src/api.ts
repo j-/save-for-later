@@ -4,25 +4,16 @@ import {
   type MutationOptions,
   type QueryOptions,
 } from '@tanstack/react-query';
-import { addItem, clearDatabase, deleteItem, listItems } from './shared/db';
+import {
+  addItem,
+  clearDatabase,
+  deleteItem,
+  getItem,
+  listItems,
+} from './shared/db';
 import type { StoreItem } from './shared/types';
 
 export * from './shared/types';
-
-export type ClearDatabaseParameters = Parameters<typeof clearDatabase>;
-export type ClearDatabaseOptions = Exclude<MutationOptions<void, unknown, ClearDatabaseParameters>, 'mutationFn'>;
-
-export const useClearDatabase = (options?: ClearDatabaseOptions) => {
-  return useMutation({
-    mutationFn: async () => {
-      return clearDatabase();
-    },
-    onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
-      await ctx.client.invalidateQueries();
-    },
-    ...options,
-  });
-};
 
 export type AddItemParameters = Parameters<typeof addItem>;
 export type AddItemOptions = Exclude<MutationOptions<StoreItem, unknown, AddItemParameters>, 'mutationFn'>;
@@ -39,13 +30,16 @@ export const useAddItem = (options?: AddItemOptions) => {
   });
 };
 
-export type ListItemsOptions = Exclude<QueryOptions<StoreItem[], unknown>, 'mutationFn'>;
+export type ClearDatabaseParameters = Parameters<typeof clearDatabase>;
+export type ClearDatabaseOptions = Exclude<MutationOptions<void, unknown, ClearDatabaseParameters>, 'mutationFn'>;
 
-export const useListItems = (options?: ListItemsOptions) => {
-  return useQuery<StoreItem[], unknown, StoreItem[]>({
-    queryKey: ['listItems'],
-    queryFn: async () => {
-      return listItems();
+export const useClearDatabase = (options?: ClearDatabaseOptions) => {
+  return useMutation({
+    mutationFn: async () => {
+      return clearDatabase();
+    },
+    onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
+      await ctx.client.invalidateQueries();
     },
     ...options,
   });
@@ -61,6 +55,30 @@ export const useDeleteItem = (options?: DeleteItemOptions) => {
     },
     onSuccess: async (_data, _variables, _onMutateResult, ctx) => {
       await ctx.client.invalidateQueries({ queryKey: ['listItems'] });
+    },
+    ...options,
+  });
+};
+
+export type GetItemOptions = Exclude<QueryOptions<StoreItem, unknown>, 'queryKey' | 'queryFn'>;
+
+export const useGetItem = (id: string, options?: GetItemOptions) => {
+  return useQuery<StoreItem, unknown>({
+    queryKey: ['item', id],
+    queryFn: async () => {
+      return getItem(id);
+    },
+    ...options,
+  });
+};
+
+export type ListItemsOptions = Exclude<QueryOptions<StoreItem[], unknown>, 'queryKey' | 'queryFn'>;
+
+export const useListItems = (options?: ListItemsOptions) => {
+  return useQuery<StoreItem[], unknown, StoreItem[]>({
+    queryKey: ['listItems'],
+    queryFn: async () => {
+      return listItems();
     },
     ...options,
   });

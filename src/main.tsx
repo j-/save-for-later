@@ -4,8 +4,8 @@ import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
+import { Router } from './Router';
 import { theme } from './theme';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -29,8 +29,7 @@ Sentry.init({
 });
 
 const queryClient = new QueryClient();
-const ProfiledApp = Sentry.withProfiler(App);
-
+const ProfiledRouter = Sentry.withProfiler(Router);
 
 const elem = document.getElementById('root')!;
 const app = (
@@ -39,7 +38,7 @@ const app = (
       <CssBaseline />
       <Sentry.ErrorBoundary fallback={ErrorBoundaryFallback}>
         <QueryClientProvider client={queryClient}>
-          <ProfiledApp />
+          <ProfiledRouter />
         </QueryClientProvider>
       </Sentry.ErrorBoundary>
     </ThemeProvider>
