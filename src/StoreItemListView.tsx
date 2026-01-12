@@ -1,15 +1,16 @@
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo, type FC } from 'react';
-import { FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_ID, useListItems } from './api';
+import { FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_ID, listItemsOptions } from './api';
 import { StoreItemViewWithErrorBoundary } from './StoreItemViewWithErrorBoundary';
 
 export const StoreItemListView: FC = () => {
   const {
     isLoading,
     data,
-  } = useListItems();
+  } = useQuery(listItemsOptions);
 
   const now = useMemo(() => new Date(), []);
 

@@ -5,12 +5,21 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import type { FC } from 'react';
+import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 import { RouteIndex } from './RouteIndex';
 import { RouteItem } from './RouteItem';
 import { RouteNotFound } from './RouteNotFound';
 
 const rootRoute = createRootRoute({
   notFoundComponent: RouteNotFound,
+  errorComponent: ({ error, reset, info }) => (
+    <ErrorBoundaryFallback
+      componentStack={info?.componentStack ?? ''}
+      error={error}
+      eventId='rootRoute'
+      resetError={reset}
+    />
+  ),
 });
 
 export const indexRoute = createRoute({

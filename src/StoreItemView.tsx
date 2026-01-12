@@ -1,13 +1,14 @@
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
 import {
+  deleteItemOptions,
   FIELD_ITEMS_DATA,
   FIELD_ITEMS_DATE_ADDED,
   FIELD_ITEMS_DATE_LAPSED,
   FIELD_ITEMS_ID,
-  useDeleteItem,
   type StoreItem
 } from './api';
 import { Link } from './Link';
@@ -23,7 +24,7 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
 }) => {
   const {
     mutateAsync: deleteItem,
-  } = useDeleteItem();
+  } = useMutation(deleteItemOptions);
 
   return (
     <Paper sx={{ p: 2 }}>

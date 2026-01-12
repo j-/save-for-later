@@ -6,11 +6,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { useMutation } from '@tanstack/react-query';
 import { add } from 'date-fns';
 import { type FC } from 'react';
 import { Controller, Form, useForm } from 'react-hook-form';
 import z from 'zod';
-import { useAddItem, useClearDatabase } from './api';
+import { addItemOptions, clearDatabaseOptions } from './api';
 
 export enum AddItemInterval {
   CUSTOM,
@@ -48,11 +49,11 @@ export const AddItemForm: FC = () => {
 
   const {
     mutateAsync: addItem,
-  } = useAddItem();
+  } = useMutation(addItemOptions);
 
   const {
     mutateAsync: clearDatabase,
-  } = useClearDatabase();
+  } = useMutation(clearDatabaseOptions);
 
   return (
     <Form
