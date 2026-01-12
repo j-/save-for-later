@@ -3,8 +3,10 @@ import {
   createRootRouteWithContext,
   createRoute,
   createRouter,
+  Outlet,
   RouterProvider
 } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import type { FC } from 'react';
 import { getItemOptions, listItemsOptions, queryClient } from './api';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
@@ -23,6 +25,12 @@ const rootRoute = createRootRouteWithContext<{
       eventId="rootRoute"
       resetError={reset}
     />
+  ),
+  component: () => (
+    <>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </>
   ),
 });
 
