@@ -10,6 +10,7 @@ import {
   useDeleteItem,
   type StoreItem
 } from './api';
+import { Link } from './Link';
 
 export type StoreItemViewProps = {
   item: StoreItem;
@@ -31,7 +32,9 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
       </Typography>
 
       <Typography fontStyle="italic">
-        {item[FIELD_ITEMS_ID]}
+        <Link to="/item/$itemId" params={{ itemId: item[FIELD_ITEMS_ID] }}>
+          {item[FIELD_ITEMS_ID]}
+        </Link>
       </Typography>
 
       <Typography>

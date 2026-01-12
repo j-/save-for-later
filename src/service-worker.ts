@@ -49,7 +49,7 @@ sw.addEventListener('fetch', (event) => {
         files,
       }, new Date());
 
-      const res = Response.redirect(`/?shareId=${encodeURIComponent(id)}`, 303);
+      const res = Response.redirect(`/item/${encodeURIComponent(id)}`, 303);
       return res;
     } catch (err) {
       console.error('[SW] Failed to save item to database', err);
