@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "build": "bun run scripts/build.ts",
-    "postbuild": "sentry-cli sourcemaps inject --org j-hj --project save-for-later ./dist && sentry-cli sourcemaps upload --org j-hj --project save-for-later ./dist",
+    "postbuild": "sentry-cli sourcemaps inject dist && sentry-cli sourcemaps upload dist",
     "start": "NODE_ENV=production bun src/index.ts"
   },
   "dependencies": {
