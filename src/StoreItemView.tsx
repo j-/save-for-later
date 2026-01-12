@@ -1,5 +1,7 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
@@ -12,8 +14,6 @@ import {
   type StoreItem
 } from './api';
 import { Link } from './Link';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
 
 export type StoreItemViewProps = {
   item: StoreItem;
@@ -30,27 +30,36 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
     mutateAsync: deleteItem,
   } = useMutation(deleteItemOptions);
 
+  const {
+    [FIELD_ITEMS_ID]: itemId,
+    [FIELD_ITEMS_DATA]: data,
+    [FIELD_ITEMS_DATE_ADDED]: dateAdded,
+    [FIELD_ITEMS_DATE_LAPSED]: dateLapsed,
+  } = item;
+
   return (
     <Paper elevation={0} sx={{ p: 2 }}>
       <Stack gap={2}>
         <Box>
           <Typography component="pre" fontWeight="bold" fontFamily="monospace">
-            {JSON.stringify(item[FIELD_ITEMS_DATA], null, 2)}
+            {JSON.stringify(data, null, 2)}
           </Typography>
 
           <Typography fontStyle="italic">
-            <Link to="/item/$itemId" params={{ itemId: item[FIELD_ITEMS_ID] }}>
-              {item[FIELD_ITEMS_ID]}
+            <Link to="/item/$itemId" params={{ itemId }}>
+              {itemId}
             </Link>
           </Typography>
 
           <Typography>
-            Added: {item[FIELD_ITEMS_DATE_ADDED].toISOString()}
+            Added: {dateAdded.toISOString()}
           </Typography>
 
-          <Typography>
-            Reminder: {item[FIELD_ITEMS_DATE_LAPSED].toISOString()}
-          </Typography>
+          {dateLapsed ? (
+            <Typography>
+              Reminder: {dateLapsed.toISOString()}
+            </Typography>
+          ) : null}
         </Box>
 
         <Stack gap={2} direction="row">
@@ -59,7 +68,7 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
               color="error"
               variant="outlined"
               onClick={async () => {
-                await deleteItem([item[FIELD_ITEMS_ID]], {
+                await deleteItem([itemId], {
                   onSuccess: onAfterDeleteItem,
                 });
               }}

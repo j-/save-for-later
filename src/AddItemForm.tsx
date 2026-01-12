@@ -89,9 +89,9 @@ export const AddItemForm: FC = () => {
             files,
           },
           dateLapsed,
-        ]);
-
-        reset();
+        ], {
+          onSuccess: () => reset(),
+        });
       }}
     >
       <Stack gap={2}>
