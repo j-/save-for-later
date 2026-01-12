@@ -2,6 +2,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { queryClient } from './api';
@@ -38,6 +39,7 @@ const app = (
       <CssBaseline />
       <Sentry.ErrorBoundary fallback={ErrorBoundaryFallback}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
           <ProfiledRouter />
         </QueryClientProvider>
       </Sentry.ErrorBoundary>
