@@ -7,8 +7,11 @@ import {
 import type { FC } from 'react';
 import { RouteIndex } from './RouteIndex';
 import { RouteItem } from './RouteItem';
+import { RouteNotFound } from './RouteNotFound';
 
-const rootRoute = createRootRoute();
+const rootRoute = createRootRoute({
+  notFoundComponent: RouteNotFound,
+});
 
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
