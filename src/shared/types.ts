@@ -15,7 +15,7 @@ export interface StoreItem {
   [FIELD_ITEMS_ID]: string;
   [FIELD_ITEMS_DATA]: ShareData;
   [FIELD_ITEMS_DATE_ADDED]: Date;
-  [FIELD_ITEMS_DATE_LAPSED]: Date;
+  [FIELD_ITEMS_DATE_LAPSED]: Date | null;
 }
 
 export interface SaveForLaterDB extends DBSchema {

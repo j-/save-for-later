@@ -14,6 +14,7 @@ import z from 'zod';
 import { addItemOptions, clearDatabaseOptions } from './api';
 
 export enum AddItemInterval {
+  NONE,
   CUSTOM,
   DAYS,
   WEEKS,
@@ -27,7 +28,13 @@ export const AddItemFormSchema = z.object({
   url: z.url().nonempty().optional(),
   files: z.array(z.file()).optional(),
   count: z.coerce.number().int().min(1),
-  interval: z.enum(AddItemInterval),
+  interval: z.union([
+    z.literal(''),
+    z.enum(AddItemInterval),
+  ])
+    .transform((value) => (
+      value || AddItemInterval.NONE
+    )),
 });
 
 export type AddItemFormInput = z.input<typeof AddItemFormSchema>;
@@ -37,11 +44,12 @@ export const AddItemForm: FC = () => {
   const {
     control,
     reset,
+    watch,
   } = useForm<AddItemFormInput, unknown, AddItemFormOutput>({
     defaultValues: {
       text: '',
       count: 1,
-      interval: AddItemInterval.DAYS,
+      interval: '',
     },
     resolver: zodResolver(AddItemFormSchema),
     shouldFocusError: true,
@@ -59,12 +67,12 @@ export const AddItemForm: FC = () => {
     <Form
       control={control}
       onSubmit={async ({ data }) => {
-        const dateLapsed = add(new Date(), {
+        const dateLapsed = data.interval ? add(new Date(), {
           days: data.interval === AddItemInterval.DAYS ? data.count : 0,
           weeks: data.interval === AddItemInterval.WEEKS ? data.count : 0,
           months: data.interval === AddItemInterval.MONTHS ? data.count : 0,
           years: data.interval === AddItemInterval.YEARS ? data.count : 0,
-        });
+        }) : null;
 
         const {
           title,
@@ -126,30 +134,8 @@ export const AddItemForm: FC = () => {
           p: 0,
           border: 'none',
         }}>
-          <InputLabel component="legend">Remind me in&hellip;</InputLabel>
-
-          <FormControl fullWidth>
-            <Controller
-              name="count"
-              control={control}
-              render={({ field, fieldState }) => {
-                const { ref, ...fieldProps } = field;
-                return (
-                  <TextField
-                    type="number"
-                    placeholder="1"
-                    size="small"
-                    error={fieldState.error != null}
-                    title={fieldState.error?.message}
-                    inputRef={ref}
-                    {...fieldProps}
-                  />
-                );
-              }}
-            />
-          </FormControl>
-
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
+            <InputLabel size="small">Add a reminder&hellip;</InputLabel>
             <Controller
               name="interval"
               control={control}
@@ -158,6 +144,7 @@ export const AddItemForm: FC = () => {
                 return (
                   <Select
                     size="small"
+                    label="Add a reminder&hellip;"
                     error={fieldState.error != null}
                     title={fieldState.error?.message}
                     inputRef={ref}
@@ -173,6 +160,30 @@ export const AddItemForm: FC = () => {
               }}
             />
           </FormControl>
+
+          {watch('interval') ? (
+            <FormControl fullWidth size="small">
+              <Controller
+                name="count"
+                control={control}
+                shouldUnregister
+                render={({ field, fieldState }) => {
+                  const { ref, ...fieldProps } = field;
+                  return (
+                    <TextField
+                      type="number"
+                      placeholder="1"
+                      size="small"
+                      error={fieldState.error != null}
+                      title={fieldState.error?.message}
+                      inputRef={ref}
+                      {...fieldProps}
+                    />
+                  );
+                }}
+              />
+            </FormControl>
+          ) : null}
         </Stack>
 
         <Stack gap={2} direction="row">

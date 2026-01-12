@@ -24,7 +24,10 @@ const getDB = () => (
   })
 );
 
-export const addItem = async (data: ShareData, dateLapsed: Date): Promise<StoreItem> => {
+export const addItem = async (
+  data: ShareData,
+  dateLapsed: Date | null = null,
+): Promise<StoreItem> => {
   const db = await getDB();
   const dateAdded = new Date();
   const payload: StoreItem = {
