@@ -12,6 +12,7 @@ import { type FC } from 'react';
 import { Controller, Form, useForm } from 'react-hook-form';
 import z from 'zod';
 import { addItemOptions, clearDatabaseOptions } from './api';
+import { useInstallPWA } from './context/InstallPWA';
 
 export enum AddItemInterval {
   NONE,
@@ -62,6 +63,12 @@ export const AddItemForm: FC = () => {
   const {
     mutateAsync: clearDatabase,
   } = useMutation(clearDatabaseOptions);
+
+  const {
+    isInstalled,
+    isSupported,
+    requestInstall,
+  } = useInstallPWA();
 
   return (
     <Form
@@ -191,10 +198,23 @@ export const AddItemForm: FC = () => {
             Save for later
           </Button>
 
-          <Button color="error" variant="outlined" onClick={async () => {
-            await clearDatabase([]);
-            reset();
-          }}>
+          {isSupported && !isInstalled ? (
+            <Button variant="outlined" onClick={() => {
+              requestInstall();
+            }}>
+              Request install
+            </Button>
+          ) : null}
+
+          <Button
+            color="error"
+            variant="outlined"
+            onClick={async () => {
+              await clearDatabase([]);
+              reset();
+            }}
+            sx={{ ml: 'auto' }}
+          >
             Clear database
           </Button>
         </Stack>

@@ -13,6 +13,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { InstallPWAProvider } from './context/InstallPWA';
 
 Sentry.init({
   dsn: process.env.BUN_PUBLIC_SENTRY_DSN,
@@ -40,7 +41,9 @@ const app = (
       <Sentry.ErrorBoundary fallback={ErrorBoundaryFallback}>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <ProfiledRouter />
+          <InstallPWAProvider>
+            <ProfiledRouter />
+          </InstallPWAProvider>
         </QueryClientProvider>
       </Sentry.ErrorBoundary>
     </ThemeProvider>

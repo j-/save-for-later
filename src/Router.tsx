@@ -1,3 +1,4 @@
+import Paper from '@mui/material/Paper';
 import type { QueryClient } from '@tanstack/react-query';
 import {
   createRootRouteWithContext,
@@ -13,7 +14,6 @@ import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 import { RouteIndex } from './RouteIndex';
 import { RouteItem } from './RouteItem';
 import { RouteNotFound } from './RouteNotFound';
-import Paper from '@mui/material/Paper';
 
 const rootRoute = createRootRouteWithContext<{
   queryClient: QueryClient;
