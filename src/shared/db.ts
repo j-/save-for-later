@@ -11,7 +11,7 @@ import {
   type StoreItem
 } from './types';
 
-const initDB = () => (
+const getDB = () => (
   openDB<SaveForLaterDB>(DB_NAME, DB_VERSION, {
     upgrade(db, _oldVersion, _newVersion, _transaction, _event) {
       const store = db.createObjectStore(STORE_NAME_ITEMS, {
@@ -24,9 +24,8 @@ const initDB = () => (
   })
 );
 
-let db = await initDB();
-
 export const addItem = async (data: ShareData, dateLapsed: Date): Promise<StoreItem> => {
+  const db = await getDB();
   const dateAdded = new Date();
   const payload: StoreItem = {
     id: crypto.randomUUID(),
@@ -39,6 +38,7 @@ export const addItem = async (data: ShareData, dateLapsed: Date): Promise<StoreI
 };
 
 export const clearDatabase = async () => {
+  const db = await getDB();
   const tx = db.transaction(STORE_NAMES, 'readwrite');
   await Promise.all(
     STORE_NAMES.map((storeName) => (
@@ -49,9 +49,11 @@ export const clearDatabase = async () => {
 };
 
 export const deleteItem = async (id: string): Promise<void> => {
+  const db = await getDB();
   await db.delete(STORE_NAME_ITEMS, id);
 };
 
 export const listItems = async (): Promise<StoreItem[]> => {
+  const db = await getDB();
   return await db.getAllFromIndex(STORE_NAME_ITEMS, FIELD_ITEMS_DATE_LAPSED);
 };
