@@ -1,9 +1,8 @@
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useLocation, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { deleteItemOptions, FIELD_ITEMS_ID, getItemOptions } from './api';
@@ -12,7 +11,6 @@ import { indexRoute, itemIdRoute } from './Router';
 import { StoreItemView } from './StoreItemView';
 
 export const RouteItem: FC = () => {
-  const { pathname } = useLocation();
   const { itemId } = itemIdRoute.useParams();
   const navigate = useNavigate();
 
@@ -35,7 +33,7 @@ export const RouteItem: FC = () => {
   }
 
   return (
-    <Stack gap={2}>
+    <Stack gap={4}>
       <Box>
         <LinkButton
           to={indexRoute.path}
@@ -45,10 +43,6 @@ export const RouteItem: FC = () => {
           <FormattedMessage id="wfK8t9" defaultMessage="All items" />
         </LinkButton>
       </Box>
-
-      <Typography fontFamily="monospace">
-        {pathname}
-      </Typography>
 
       <StoreItemView
         item={item}

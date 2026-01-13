@@ -1,7 +1,5 @@
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import type { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -17,14 +15,8 @@ export const RouteIndex: FC = () => {
   } = useQuery(listItemsOptions);
 
   return (
-    <Stack gap={2}>
-      <Typography component="h1" variant="h6">
-        <FormattedMessage defaultMessage="Save for later" id="U/jWmk" />
-      </Typography>
-
+    <Stack gap={4}>
       <AddItemForm />
-
-      <Divider />
 
       <Box>
         {

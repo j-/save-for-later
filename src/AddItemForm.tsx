@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Paper from '@mui/material/Paper';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -106,158 +107,160 @@ export const AddItemForm: FC = () => {
         });
       }}
     >
-      <Stack gap={2}>
-        <Controller
-          name="text"
-          control={control}
-          render={({ field, fieldState }) => {
-            const { ref, ...fieldProps } = field;
-            return (
-              <TextField
-                label={
-                  <FormattedMessage
-                    id="+3Pb5I"
-                    defaultMessage="What do you want to remember?"
-                  />
-                }
-                autoComplete="off"
-                fullWidth
-                multiline
-                autoFocus
-                minRows={3}
-                maxRows={5}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && e.metaKey) {
-                    const input = e.target as HTMLTextAreaElement;
-                    const form = input.form;
-                    form?.requestSubmit();
+      <Paper sx={{ p: 2 }}>
+        <Stack gap={2}>
+          <Controller
+            name="text"
+            control={control}
+            render={({ field, fieldState }) => {
+              const { ref, ...fieldProps } = field;
+              return (
+                <TextField
+                  label={
+                    <FormattedMessage
+                      id="+3Pb5I"
+                      defaultMessage="What do you want to remember?"
+                    />
                   }
-                }}
-                error={fieldState.error != null}
-                title={fieldState.error?.message}
-                inputRef={ref}
-                slotProps={{
-                  inputLabel: {
-                    shrink: field.value != '',
-                  },
-                }}
-                {...fieldProps}
-              />
-            );
-          }}
-        />
-
-        <Stack component="fieldset" gap={2} direction="row" sx={{
-          p: 0,
-          border: 'none',
-        }}>
-          <FormControl fullWidth size="small">
-            <InputLabel size="small">
-              <FormattedMessage
-                id="hqW69a"
-                defaultMessage="Add a reminder…"
-              />
-            </InputLabel>
-            <Controller
-              name="interval"
-              control={control}
-              render={({ field, fieldState }) => {
-                const { ref, ...fieldProps } = field;
-                return (
-                  <Select
-                    size="small"
-                    label={
-                      <FormattedMessage
-                        id="hqW69a"
-                        defaultMessage="Add a reminder…"
-                      />
+                  autoComplete="off"
+                  fullWidth
+                  multiline
+                  autoFocus
+                  minRows={3}
+                  maxRows={5}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && e.metaKey) {
+                      const input = e.target as HTMLTextAreaElement;
+                      const form = input.form;
+                      form?.requestSubmit();
                     }
-                    error={fieldState.error != null}
-                    title={fieldState.error?.message}
-                    inputRef={ref}
-                    {...fieldProps}
-                  >
-                    <MenuItem value={AddItemInterval.DAYS}>
-                      <FormattedMessage id="yfb8F1" defaultMessage="Day(s)" />
-                    </MenuItem>
-                    <MenuItem value={AddItemInterval.WEEKS}>
-                      <FormattedMessage id="JG/BCm" defaultMessage="Week(s)" />
-                    </MenuItem>
-                    <MenuItem value={AddItemInterval.MONTHS}>
-                      <FormattedMessage id="JNCob0" defaultMessage="Month(s)" />
-                    </MenuItem>
-                    <MenuItem value={AddItemInterval.YEARS}>
-                      <FormattedMessage id="Du0ILR" defaultMessage="Year(s)" />
-                    </MenuItem>
-                    {/* <MenuItem value={AddItemInterval.CUSTOM}>
-                      <FormattedMessage id="lKjjJ7" defaultMessage="Custom…" />
-                    </MenuItem> */}
-                  </Select>
-                );
-              }}
-            />
-          </FormControl>
+                  }}
+                  error={fieldState.error != null}
+                  title={fieldState.error?.message}
+                  inputRef={ref}
+                  slotProps={{
+                    inputLabel: {
+                      shrink: field.value != '',
+                    },
+                  }}
+                  {...fieldProps}
+                />
+              );
+            }}
+          />
 
-          {watchedInterval ? (
+          <Stack component="fieldset" gap={2} direction="row" sx={{
+            p: 0,
+            border: 'none',
+          }}>
             <FormControl fullWidth size="small">
+              <InputLabel size="small">
+                <FormattedMessage
+                  id="hqW69a"
+                  defaultMessage="Add a reminder…"
+                />
+              </InputLabel>
               <Controller
-                name="count"
+                name="interval"
                 control={control}
-                shouldUnregister
                 render={({ field, fieldState }) => {
                   const { ref, ...fieldProps } = field;
                   return (
-                    <TextField
-                      type="number"
-                      placeholder="1"
+                    <Select
                       size="small"
+                      label={
+                        <FormattedMessage
+                          id="hqW69a"
+                          defaultMessage="Add a reminder…"
+                        />
+                      }
                       error={fieldState.error != null}
                       title={fieldState.error?.message}
                       inputRef={ref}
                       {...fieldProps}
-                    />
+                    >
+                      <MenuItem value={AddItemInterval.DAYS}>
+                        <FormattedMessage id="yfb8F1" defaultMessage="Day(s)" />
+                      </MenuItem>
+                      <MenuItem value={AddItemInterval.WEEKS}>
+                        <FormattedMessage id="JG/BCm" defaultMessage="Week(s)" />
+                      </MenuItem>
+                      <MenuItem value={AddItemInterval.MONTHS}>
+                        <FormattedMessage id="JNCob0" defaultMessage="Month(s)" />
+                      </MenuItem>
+                      <MenuItem value={AddItemInterval.YEARS}>
+                        <FormattedMessage id="Du0ILR" defaultMessage="Year(s)" />
+                      </MenuItem>
+                      {/* <MenuItem value={AddItemInterval.CUSTOM}>
+                        <FormattedMessage id="lKjjJ7" defaultMessage="Custom…" />
+                      </MenuItem> */}
+                    </Select>
                   );
                 }}
               />
             </FormControl>
-          ) : null}
-        </Stack>
 
-        <Stack gap={2} direction="row">
-          <Button type="submit" variant="contained">
-            <FormattedMessage
-              id="U/jWmk"
-              defaultMessage="Save for later"
-            />
-          </Button>
+            {watchedInterval ? (
+              <FormControl fullWidth size="small">
+                <Controller
+                  name="count"
+                  control={control}
+                  shouldUnregister
+                  render={({ field, fieldState }) => {
+                    const { ref, ...fieldProps } = field;
+                    return (
+                      <TextField
+                        type="number"
+                        placeholder="1"
+                        size="small"
+                        error={fieldState.error != null}
+                        title={fieldState.error?.message}
+                        inputRef={ref}
+                        {...fieldProps}
+                      />
+                    );
+                  }}
+                />
+              </FormControl>
+            ) : null}
+          </Stack>
 
-          {isSupported && !isInstalled ? (
-            <Button variant="outlined" onClick={() => {
-              requestInstall();
-            }}>
+          <Stack gap={2} direction="row">
+            <Button type="submit" variant="contained">
               <FormattedMessage
-                id="PRQX/4"
-                defaultMessage="Request install"
+                id="U/jWmk"
+                defaultMessage="Save for later"
               />
             </Button>
-          ) : null}
 
-          <Button
-            color="error"
-            variant="outlined"
-            onClick={async () => {
-              await clearDatabase([]);
-              reset();
-            }}
-            sx={{ ml: 'auto' }}
-          >
-            <FormattedMessage
-              id="McJ37B"
-              defaultMessage="Clear database"
-            />
-          </Button>
+            {isSupported && !isInstalled ? (
+              <Button variant="outlined" onClick={() => {
+                requestInstall();
+              }}>
+                <FormattedMessage
+                  id="PRQX/4"
+                  defaultMessage="Request install"
+                />
+              </Button>
+            ) : null}
+
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={async () => {
+                await clearDatabase([]);
+                reset();
+              }}
+              sx={{ ml: 'auto' }}
+            >
+              <FormattedMessage
+                id="McJ37B"
+                defaultMessage="Clear database"
+              />
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
+      </Paper>
     </Form>
   );
 };

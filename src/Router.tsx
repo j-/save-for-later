@@ -1,4 +1,4 @@
-import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 import type { QueryClient } from '@tanstack/react-query';
 import {
   createRootRouteWithContext,
@@ -28,10 +28,10 @@ const rootRoute = createRootRouteWithContext<{
     />
   ),
   component: () => (
-    <Paper sx={{ mx: 'auto', my: 4, p: 2, maxWidth: '70ch' }}>
+    <Box sx={{ mx: 'auto', my: 4, p: 2, maxWidth: '70ch' }}>
       <Outlet />
       <TanStackRouterDevtools />
-    </Paper>
+    </Box>
   ),
 });
 
