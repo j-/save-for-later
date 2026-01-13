@@ -14,6 +14,7 @@ import {
 } from './api';
 import { FormattedRelativeTime } from './FormattedRelativeTime';
 import { Link } from './Link';
+import { itemIdRoute } from './Router';
 import { StoreItemPreview } from './StoreItemPreview';
 
 export type StoreItemViewProps = {
@@ -40,22 +41,26 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
         <Box>
           <StoreItemPreview data={data} />
 
-          <Stack direction="row" gap={2} p={1}>
-            <Typography color="textDisabled">
+          <Stack direction="row" gap={2} px={2} py={1}>
+            <Typography color="textDisabled" variant="caption">
               Added <FormattedRelativeTime now={dataUpdatedAt} value={dateAdded} />
             </Typography>
 
             {dateLapsed ? (
-              <Typography color="textDisabled">
+              <Typography color="textDisabled" variant="caption">
                 Reminder <FormattedRelativeTime now={dataUpdatedAt} value={dateLapsed} />
               </Typography>
             ) : null}
 
-            <Typography fontStyle="italic" ml="auto">
-              <Link to="/item/$itemId" params={{ itemId }} color="textDisabled">
-                <FormattedMessage id="wEQDC6" defaultMessage="Edit" />
-              </Link>
-            </Typography>
+            <Link
+              to={itemIdRoute.fullPath}
+              params={{ itemId }}
+              color="textDisabled"
+              variant="caption"
+              fontStyle="italic" ml="auto"
+            >
+              <FormattedMessage id="wEQDC6" defaultMessage="Edit" />
+            </Link>
           </Stack>
         </Box>
 

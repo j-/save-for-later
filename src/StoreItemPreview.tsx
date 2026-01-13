@@ -34,7 +34,7 @@ export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
         target="_blank"
         href={url}
         fullWidth
-        sx={{ p: 1 }}
+        sx={{ p: 2 }}
       >
         <Stack width="100%">
           {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
@@ -50,7 +50,7 @@ export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
       <Paper
         elevation={1}
         sx={{
-          p: 1,
+          p: 2,
           color: (theme) => theme.palette.grey[200],
           backgroundColor: (theme) => theme.palette.grey[900],
         }}

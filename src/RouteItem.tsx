@@ -36,7 +36,7 @@ export const RouteItem: FC = () => {
     <Stack gap={4}>
       <Box>
         <LinkButton
-          to={indexRoute.path}
+          to={indexRoute.fullPath}
           variant="outlined"
           startIcon={<ChevronLeft />}
         >
@@ -49,7 +49,7 @@ export const RouteItem: FC = () => {
         dataUpdatedAt={dataUpdatedAt}
         deleteItem={async () => {
           const itemId = item[FIELD_ITEMS_ID];
-          const onSuccess = () => navigate({ to: indexRoute.path });
+          const onSuccess = () => navigate({ to: indexRoute.fullPath });
           await deleteItem([itemId], {
             onSuccess,
           });
