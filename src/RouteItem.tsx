@@ -19,6 +19,7 @@ export const RouteItem: FC = () => {
   const {
     isLoading,
     data: item,
+    dataUpdatedAt,
   } = useQuery(getItemOptions(itemId));
 
   const {
@@ -51,6 +52,7 @@ export const RouteItem: FC = () => {
 
       <StoreItemView
         item={item}
+        dataUpdatedAt={dataUpdatedAt}
         deleteItem={async () => {
           const itemId = item[FIELD_ITEMS_ID];
           const onSuccess = () => navigate({ to: indexRoute.path });

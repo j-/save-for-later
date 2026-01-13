@@ -13,6 +13,7 @@ export const RouteIndex: FC = () => {
   const {
     isLoading: listItemsLoading,
     data: listItemsData,
+    dataUpdatedAt,
   } = useQuery(listItemsOptions);
 
   return (
@@ -28,7 +29,7 @@ export const RouteIndex: FC = () => {
       <Box>
         {
           listItemsLoading ? <FormattedMessage id="T4VxQN" defaultMessage="Loading…" /> :
-          listItemsData ? <StoreItemListView items={listItemsData} /> :
+          listItemsData ? <StoreItemListView items={listItemsData} dataUpdatedAt={dataUpdatedAt} /> :
           <FormattedMessage id="MTN85Y" defaultMessage="Error loading items" />
         }
       </Box>

@@ -12,16 +12,19 @@ import {
   FIELD_ITEMS_ID,
   type StoreItem,
 } from './api';
+import { FormattedRelativeTime } from './FormattedRelativeTime';
 import { Link } from './Link';
 import { StoreItemPreview } from './StoreItemPreview';
 
 export type StoreItemViewProps = {
   item: StoreItem;
+  dataUpdatedAt: number;
   deleteItem?: () => void;
 };
 
 export const StoreItemView: FC<StoreItemViewProps> = ({
   item,
+  dataUpdatedAt,
   deleteItem,
 }) => {
   const {
@@ -44,12 +47,12 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
           </Typography>
 
           <Typography>
-            Added: {dateAdded.toISOString()}
+            Added: <FormattedRelativeTime now={dataUpdatedAt} value={dateAdded} />
           </Typography>
 
           {dateLapsed ? (
             <Typography>
-              Reminder: {dateLapsed.toISOString()}
+              Reminder: <FormattedRelativeTime now={dataUpdatedAt} value={dateLapsed} />
             </Typography>
           ) : null}
         </Box>

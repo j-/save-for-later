@@ -8,6 +8,8 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { useMemo } from 'react';
+import { IntlProvider } from 'react-intl';
+import en from '../src/lang/en.json';
 import { theme } from '../src/theme';
 
 export const Provider: GlobalProvider = ({ children, globalState }) => {
@@ -27,7 +29,9 @@ export const Provider: GlobalProvider = ({ children, globalState }) => {
       defaultMode={globalState.theme === 'auto' ? 'system' : globalState.theme}
     >
       <CssBaseline />
-      <RouterProvider router={router} />
+      <IntlProvider locale="en" defaultLocale="en-AU" messages={en}>
+        <RouterProvider router={router} />
+      </IntlProvider>
     </ThemeProvider>
   );
 };

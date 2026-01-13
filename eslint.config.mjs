@@ -103,6 +103,7 @@ export default defineConfig([
   },
 
   // FormatJS
+  // https://formatjs.github.io/docs/tooling/linter/
   {
     plugins: {
       formatjs,
@@ -117,6 +118,7 @@ export default defineConfig([
   },
 
   // Code style
+  // https://eslint.style/rules
   {
     plugins: {
       '@stylistic': stylistic,

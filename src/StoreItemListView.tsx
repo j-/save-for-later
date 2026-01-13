@@ -11,11 +11,13 @@ import { StoreItemViewWithErrorBoundary } from './StoreItemViewWithErrorBoundary
 
 export type StoreItemListViewProps = {
   items?: StoreItem[];
+  dataUpdatedAt: number;
   deleteItem?: (itemId: string) => void;
 };
 
 export const StoreItemListView: FC<StoreItemListViewProps> = ({
   items,
+  dataUpdatedAt,
   deleteItem,
 }) => {
   const now = useMemo(() => new Date(), []);
@@ -38,6 +40,7 @@ export const StoreItemListView: FC<StoreItemListViewProps> = ({
     <Box key={item[FIELD_ITEMS_ID]}>
       <StoreItemViewWithErrorBoundary
         item={item}
+        dataUpdatedAt={dataUpdatedAt}
         deleteItem={
           deleteItem ?
             () => deleteItem(item[FIELD_ITEMS_ID]) :
@@ -45,7 +48,7 @@ export const StoreItemListView: FC<StoreItemListViewProps> = ({
         }
       />
     </Box>
-  ), [deleteItem]);
+  ), [deleteItem, dataUpdatedAt]);
 
   return (
     <Stack gap={1}>
