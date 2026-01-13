@@ -1,9 +1,10 @@
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { FC } from 'react';
+import { useMemo, type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export type StoreItemPreviewProps = {
@@ -23,24 +24,38 @@ const isURL = (maybeURL: string) => {
 };
 
 export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
-  const url = data.url || (
-    data.text && isURL(data.text) ? data.text : null
-  );
+  const url = useMemo(() => {
+    if (data.url) return new URL(data.url);
+    if (data.text && isURL(data.text)) return new URL(data.text);
+    return null;
+  }, [data.url, data.text]);
+
+  const favicon = useMemo(() => {
+    if (!url) return null;
+    const domain = url.hostname;
+    const src = new URL('https://www.google.com/s2/favicons?sz=64');
+    src.searchParams.set('domain_url', domain);
+    return <img src={src.toString()} width={16} height={16} />;
+  }, [url]);
 
   if (url) {
     return (
       <Button
         variant="contained"
         target="_blank"
-        href={url}
+        href={url.toString()}
         fullWidth
         sx={{ p: 2 }}
       >
-        <Stack width="100%">
-          {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
-          {data.text && <Typography>{data.text}</Typography>}
-          <Typography fontStyle={data.url}>{data.url}</Typography>
-        </Stack>
+        <Box width="100%" display="flex" gap={1} alignItems="center">
+          {favicon}
+
+          <Stack flex={1}>
+            {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
+            {data.text && <Typography>{data.text}</Typography>}
+            <Typography fontStyle={data.url}>{data.url}</Typography>
+          </Stack>
+        </Box>
       </Button>
     );
   }
