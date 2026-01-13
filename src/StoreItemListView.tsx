@@ -1,42 +1,55 @@
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import { useQuery } from '@tanstack/react-query';
-import { useMemo, type FC } from 'react';
-import { FIELD_ITEMS_DATE_LAPSED, FIELD_ITEMS_ID, listItemsOptions } from './api';
+import { useCallback, useMemo, type FC } from 'react';
+import {
+  FIELD_ITEMS_DATE_LAPSED,
+  FIELD_ITEMS_ID,
+  type StoreItem
+} from './api';
 import { StoreItemViewWithErrorBoundary } from './StoreItemViewWithErrorBoundary';
 
-export const StoreItemListView: FC = () => {
-  const {
-    isLoading,
-    data,
-  } = useQuery(listItemsOptions);
+export type StoreItemListViewProps = {
+  items?: StoreItem[];
+  deleteItem?: (itemId: string) => void;
+};
 
+export const StoreItemListView: FC<StoreItemListViewProps> = ({
+  items,
+  deleteItem,
+}) => {
   const now = useMemo(() => new Date(), []);
 
   const lapsedBeforeNow = useMemo(() => {
-    return data?.filter((item) => (
+    return items?.filter((item) => (
+      item[FIELD_ITEMS_DATE_LAPSED] != null &&
       item[FIELD_ITEMS_DATE_LAPSED] <= now
     ));
-  }, [data, now]);
+  }, [items, now]);
 
   const lapsesAfterNow = useMemo(() => {
-    return data?.filter((item) => (
+    return items?.filter((item) => (
+      item[FIELD_ITEMS_DATE_LAPSED] == null ||
       item[FIELD_ITEMS_DATE_LAPSED] > now
     ));
-  }, [data, now]);
+  }, [items, now]);
 
-  if (isLoading) {
-    return <>Loading&hellip;</>;
-  }
+  const mapStoreItemView = useCallback((item: StoreItem) => (
+    <Box key={item[FIELD_ITEMS_ID]}>
+      <StoreItemViewWithErrorBoundary
+        item={item}
+        deleteItem={
+          deleteItem ?
+            () => deleteItem(item[FIELD_ITEMS_ID]) :
+            undefined
+        }
+      />
+    </Box>
+  ), [deleteItem]);
 
   return (
     <Stack gap={1}>
-      {lapsedBeforeNow?.map((item, i) => (
-        <Box key={item[FIELD_ITEMS_ID]}>
-          <StoreItemViewWithErrorBoundary item={item} />
-        </Box>
-      ))}
+      {lapsedBeforeNow?.map(mapStoreItemView)}
 
       {
         lapsedBeforeNow && lapsedBeforeNow.length > 0 &&
@@ -46,11 +59,7 @@ export const StoreItemListView: FC = () => {
         null
       }
 
-      {lapsesAfterNow?.map((item, i) => (
-        <Box key={item[FIELD_ITEMS_ID]}>
-          <StoreItemViewWithErrorBoundary item={item} />
-        </Box>
-      ))}
+      {lapsesAfterNow?.map(mapStoreItemView)}
     </Stack>
   );
 };

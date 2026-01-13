@@ -3,10 +3,8 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useMutation } from '@tanstack/react-query';
 import type { FC } from 'react';
 import {
-  deleteItemOptions,
   FIELD_ITEMS_DATA,
   FIELD_ITEMS_DATE_ADDED,
   FIELD_ITEMS_DATE_LAPSED,
@@ -14,22 +12,17 @@ import {
   type StoreItem
 } from './api';
 import { Link } from './Link';
+import { StoreItemPreview } from './StoreItemPreview';
 
 export type StoreItemViewProps = {
   item: StoreItem;
-  canDelete?: boolean;
-  onAfterDeleteItem?: () => void | Promise<void>;
+  deleteItem?: () => void;
 };
 
 export const StoreItemView: FC<StoreItemViewProps> = ({
   item,
-  canDelete = false,
-  onAfterDeleteItem,
+  deleteItem,
 }) => {
-  const {
-    mutateAsync: deleteItem,
-  } = useMutation(deleteItemOptions);
-
   const {
     [FIELD_ITEMS_ID]: itemId,
     [FIELD_ITEMS_DATA]: data,
@@ -41,9 +34,7 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
     <Paper elevation={0} sx={{ p: 2 }}>
       <Stack gap={2}>
         <Box>
-          <Typography component="pre" fontWeight="bold" fontFamily="monospace">
-            {JSON.stringify(data, null, 2)}
-          </Typography>
+          <StoreItemPreview data={data} />
 
           <Typography fontStyle="italic">
             <Link to="/item/$itemId" params={{ itemId }}>
@@ -63,15 +54,11 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
         </Box>
 
         <Stack gap={2} direction="row">
-          {canDelete && (
+          {deleteItem && (
             <Button
               color="error"
               variant="outlined"
-              onClick={async () => {
-                await deleteItem([itemId], {
-                  onSuccess: onAfterDeleteItem,
-                });
-              }}
+              onClick={deleteItem}
             >
               Delete
             </Button>

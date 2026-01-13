@@ -2,12 +2,12 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import type { FC } from 'react';
-import { getItemOptions } from './api';
+import { deleteItemOptions, FIELD_ITEMS_ID, getItemOptions } from './api';
 import { LinkButton } from './Link';
-import { itemIdRoute } from './Router';
+import { indexRoute, itemIdRoute } from './Router';
 import { StoreItemView } from './StoreItemView';
 
 export const RouteItem: FC = () => {
@@ -19,6 +19,10 @@ export const RouteItem: FC = () => {
     isLoading,
     data: item,
   } = useQuery(getItemOptions(itemId));
+
+  const {
+    mutateAsync: deleteItem,
+  } = useMutation(deleteItemOptions);
 
   if (isLoading) {
     return <>Loading&hellip;</>;
@@ -32,7 +36,7 @@ export const RouteItem: FC = () => {
     <Stack gap={2}>
       <Box>
         <LinkButton
-          to="/"
+          to={indexRoute.path}
           variant="outlined"
           startIcon={<ChevronLeft />}
         >
@@ -46,8 +50,13 @@ export const RouteItem: FC = () => {
 
       <StoreItemView
         item={item}
-        canDelete
-        onAfterDeleteItem={() => navigate({ to: '/' })}
+        deleteItem={async () => {
+          const itemId = item[FIELD_ITEMS_ID];
+          const onSuccess = () => navigate({ to: indexRoute.path });
+          await deleteItem([itemId], {
+            onSuccess,
+          });
+        }}
       />
     </Stack>
   );

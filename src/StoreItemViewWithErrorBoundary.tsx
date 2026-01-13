@@ -6,18 +6,16 @@ import { StoreItemViewFallback } from './StoreItemViewFallback';
 
 export type StoreItemViewProps = {
   item: StoreItem;
+  deleteItem?: () => void;
 };
 
 export const StoreItemViewWithErrorBoundary: FC<StoreItemViewProps> = ({
   item,
-}) => {
-  return (
-    <Sentry.ErrorBoundary
-      fallback={(args) => (
-        <StoreItemViewFallback {...args} item={item} />
-      )}
-    >
-      <StoreItemView item={item} />
-    </Sentry.ErrorBoundary>
-  );
-};
+  deleteItem,
+}) => (
+  <Sentry.ErrorBoundary fallback={(args) => (
+    <StoreItemViewFallback {...args} item={item} />
+  )}>
+    <StoreItemView item={item} deleteItem={deleteItem} />
+  </Sentry.ErrorBoundary>
+);
