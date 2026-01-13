@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -14,7 +15,7 @@ const isURL = (maybeURL: string) => {
     const url = new URL(maybeURL);
     return (
       url.protocol === 'http:' ||
-      url.protocol === 'https'
+      url.protocol === 'https:'
     );
   } catch {
     return false;
@@ -32,20 +33,28 @@ export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
         variant="contained"
         target="_blank"
         href={url}
-        sx={{
-          p: 2,
-        }}
+        fullWidth
+        sx={{ p: 1 }}
       >
-        {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
-        {data.text && <Typography>{data.text}</Typography>}
-        <Typography fontStyle={data.url}>{data.url}</Typography>
+        <Stack width="100%">
+          {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
+          {data.text && <Typography>{data.text}</Typography>}
+          <Typography fontStyle={data.url}>{data.url}</Typography>
+        </Stack>
       </Button>
     );
   }
 
   if (data.text) {
     return (
-      <Paper elevation={1} sx={{ p: 2 }}>
+      <Paper
+        elevation={1}
+        sx={{
+          p: 1,
+          color: (theme) => theme.palette.grey[200],
+          backgroundColor: (theme) => theme.palette.grey[900],
+        }}
+      >
         {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
         {data.text && <Typography>{data.text}</Typography>}
       </Paper>

@@ -35,42 +35,46 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
   } = item;
 
   return (
-    <Paper elevation={0} sx={{ p: 2 }}>
+    <Paper elevation={0} sx={{ p: 0 }}>
       <Stack gap={2}>
         <Box>
           <StoreItemPreview data={data} />
 
-          <Typography fontStyle="italic">
-            <Link to="/item/$itemId" params={{ itemId }}>
-              {itemId}
-            </Link>
-          </Typography>
-
-          <Typography>
-            Added: <FormattedRelativeTime now={dataUpdatedAt} value={dateAdded} />
-          </Typography>
-
-          {dateLapsed ? (
-            <Typography>
-              Reminder: <FormattedRelativeTime now={dataUpdatedAt} value={dateLapsed} />
+          <Stack direction="row" gap={2} p={1}>
+            <Typography color="textDisabled">
+              Added <FormattedRelativeTime now={dataUpdatedAt} value={dateAdded} />
             </Typography>
-          ) : null}
+
+            {dateLapsed ? (
+              <Typography color="textDisabled">
+                Reminder <FormattedRelativeTime now={dataUpdatedAt} value={dateLapsed} />
+              </Typography>
+            ) : null}
+
+            <Typography fontStyle="italic" ml="auto">
+              <Link to="/item/$itemId" params={{ itemId }} color="textDisabled">
+                <FormattedMessage id="wEQDC6" defaultMessage="Edit" />
+              </Link>
+            </Typography>
+          </Stack>
         </Box>
 
-        <Stack gap={2} direction="row">
-          {deleteItem && (
-            <Button
-              color="error"
-              variant="outlined"
-              onClick={deleteItem}
-            >
-              <FormattedMessage
-                id="K3r6DQ"
-                defaultMessage="Delete"
-              />
-            </Button>
-          )}
-        </Stack>
+        {deleteItem && (
+          <Stack gap={2} direction="row">
+            {deleteItem && (
+              <Button
+                color="error"
+                variant="outlined"
+                onClick={deleteItem}
+              >
+                <FormattedMessage
+                  id="K3r6DQ"
+                  defaultMessage="Delete"
+                />
+              </Button>
+            )}
+          </Stack>
+        )}
       </Stack>
     </Paper>
   );
