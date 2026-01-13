@@ -47,14 +47,14 @@ export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
         fullWidth
         sx={{ p: 2 }}
       >
-        <Box width="100%" display="flex" gap={1} alignItems="start">
+        <Box boxSizing="border-box" width="100%" maxWidth="100%" display="flex" gap={1} alignItems="start">
           {favicon && (
-            <Box py={0.25}>
+            <Box py={0.5} display="inline-flex">
               {favicon}
             </Box>
           )}
 
-          <Stack flex={1}>
+          <Stack flex={1} maxWidth="100%">
             {data.title && <Typography fontWeight="bold">{data.title}</Typography>}
             {data.text && <Typography>{data.text}</Typography>}
             <Typography fontStyle={data.url} noWrap>{data.url}</Typography>
