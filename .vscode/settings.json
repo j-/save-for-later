@@ -1,4 +1,15 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSave": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "typescript.preferences.autoImportFileExcludePatterns": [
     "**/node_modules/@mui/material/esm/index.d.ts",
     "**/node_modules/@mui/icons-material/esm/index.d.ts",

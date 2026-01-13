@@ -16,15 +16,12 @@ export * from './shared/types';
 
 export const queryClient = new QueryClient();
 
-// This code is only for TypeScript
 declare global {
   interface Window {
-    __TANSTACK_QUERY_CLIENT__:
-      import("@tanstack/query-core").QueryClient;
+    __TANSTACK_QUERY_CLIENT__: QueryClient;
   }
 }
 
-// This code is for all users
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 export const addItemOptions = mutationOptions<StoreItem, unknown, Parameters<typeof addItem>>({

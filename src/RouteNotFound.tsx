@@ -1,21 +1,12 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { useLocation } from '@tanstack/react-router';
 import type { FC } from 'react';
+import { FormattedMessage } from 'react-intl';
 
-export const RouteNotFound: FC = () => {
-  const { pathname } = useLocation();
-
-  return (
-    <Stack gap={2}>
-      <Typography fontFamily="monospace">
-        {pathname}
-      </Typography>
-
-      <Typography component="h1" variant="h4">
-        Not found
-      </Typography>
-    </Stack>
-  );
-};
+export const RouteNotFound: FC = () => (
+  <Stack gap={2}>
+    <Typography component="h1" variant="h4">
+      <FormattedMessage id="TThIOM" defaultMessage="Not found" />
+    </Typography>
+  </Stack>
+);

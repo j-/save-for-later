@@ -15,5 +15,5 @@ export const INITIAL_VALUE_INSTALL_PWA_CONTEXT = {
 } as const satisfies InstallPWAContextType;
 
 export const InstallPWAContext = createContext<InstallPWAContextType>(
-  INITIAL_VALUE_INSTALL_PWA_CONTEXT
+  INITIAL_VALUE_INSTALL_PWA_CONTEXT,
 );

@@ -5,4 +5,5 @@
 *.tgz
 *.tsbuildinfo
 dist
+messages.json
 node_modules

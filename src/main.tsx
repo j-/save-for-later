@@ -5,15 +5,17 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { IntlProvider } from 'react-intl';
 import { queryClient } from './api';
+import { InstallPWAProvider } from './context/InstallPWA';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
+import en from './lang/en.json';
 import { Router } from './Router';
 import { theme } from './theme';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { InstallPWAProvider } from './context/InstallPWA';
 
 Sentry.init({
   dsn: process.env.BUN_PUBLIC_SENTRY_DSN,
@@ -21,7 +23,7 @@ Sentry.init({
   // For example, automatic IP address collection on events
   sendDefaultPii: true,
   integrations: [
-    Sentry.browserTracingIntegration()
+    Sentry.browserTracingIntegration(),
   ],
   // Tracing
   tracesSampleRate: 1.0, //  Capture 100% of the transactions
@@ -39,12 +41,14 @@ const app = (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Sentry.ErrorBoundary fallback={ErrorBoundaryFallback}>
-        <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
-          <InstallPWAProvider>
-            <ProfiledRouter />
-          </InstallPWAProvider>
-        </QueryClientProvider>
+        <IntlProvider locale={navigator.language} defaultLocale="en-AU" messages={en}>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <InstallPWAProvider>
+              <ProfiledRouter />
+            </InstallPWAProvider>
+          </QueryClientProvider>
+        </IntlProvider>
       </Sentry.ErrorBoundary>
     </ThemeProvider>
   </StrictMode>

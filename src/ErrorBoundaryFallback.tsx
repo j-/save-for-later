@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { FallbackRender } from '@sentry/react';
+import { FormattedMessage } from 'react-intl';
 import { clearDatabase } from './shared/db';
 
 export const ErrorBoundaryFallback: FallbackRender = ({
@@ -12,10 +13,18 @@ export const ErrorBoundaryFallback: FallbackRender = ({
 }) => {
   return (
     <Stack spacing={2} sx={{ width: '60ch', px: 2, my: 10, mx: 'auto' }}>
-      <Typography component="h1" variant="h4">Something went wrong</Typography>
+      <Typography component="h1" variant="h4">
+        <FormattedMessage
+          id="JqiqNj"
+          defaultMessage="Something went wrong"
+        />
+      </Typography>
 
       <Typography>
-        The application has encountered an unexpected error and failed to initialize.
+        <FormattedMessage
+          id="dHGAHz"
+          defaultMessage="The application has encountered an unexpected error and failed to initialize."
+        />
       </Typography>
 
       <Stack direction="row" spacing={2} py={4}>
@@ -23,17 +32,22 @@ export const ErrorBoundaryFallback: FallbackRender = ({
           variant="contained"
           onClick={resetError}
         >
-          Try again
+          <FormattedMessage
+            id="FazwRl"
+            defaultMessage="Try again"
+          />
         </Button>
 
         <Button
           variant="outlined"
           onClick={() => {
-            // eslint-disable-next-line no-restricted-globals
             window.location.reload();
           }}
         >
-          Reload application
+          <FormattedMessage
+            id="B8ZKI1"
+            defaultMessage="Reload application"
+          />
         </Button>
 
         <Button
@@ -45,7 +59,10 @@ export const ErrorBoundaryFallback: FallbackRender = ({
             window.location.reload(true);
           }}
         >
-          Clear site data
+          <FormattedMessage
+            id="Ms2cf4"
+            defaultMessage="Clear site data"
+          />
         </Button>
       </Stack>
 
@@ -55,7 +72,10 @@ export const ErrorBoundaryFallback: FallbackRender = ({
           color: 'grey.700',
           cursor: 'pointer',
         }}>
-          Error details
+          <FormattedMessage
+            id="qddSy6"
+            defaultMessage="Error details"
+          />
         </Box>
 
         <Paper component="pre" sx={{

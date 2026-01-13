@@ -8,7 +8,7 @@ import {
   STORE_NAME_ITEMS,
   STORE_NAMES,
   type SaveForLaterDB,
-  type StoreItem
+  type StoreItem,
 } from './types';
 
 const getDB = () => (

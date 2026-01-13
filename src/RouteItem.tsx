@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import type { FC } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { deleteItemOptions, FIELD_ITEMS_ID, getItemOptions } from './api';
 import { LinkButton } from './Link';
 import { indexRoute, itemIdRoute } from './Router';
@@ -25,11 +26,11 @@ export const RouteItem: FC = () => {
   } = useMutation(deleteItemOptions);
 
   if (isLoading) {
-    return <>Loading&hellip;</>;
+    return <FormattedMessage id="T4VxQN" defaultMessage="Loading…" />;
   }
 
   if (!item) {
-    return <>Error</>;
+    return <FormattedMessage id="JqiqNj" defaultMessage="Something went wrong" />;
   }
 
   return (
@@ -40,7 +41,7 @@ export const RouteItem: FC = () => {
           variant="outlined"
           startIcon={<ChevronLeft />}
         >
-          All items
+          <FormattedMessage id="wfK8t9" defaultMessage="All items" />
         </LinkButton>
       </Box>
 

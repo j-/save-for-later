@@ -4,12 +4,13 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
+import { FormattedMessage } from 'react-intl';
 import {
   FIELD_ITEMS_DATA,
   FIELD_ITEMS_DATE_ADDED,
   FIELD_ITEMS_DATE_LAPSED,
   FIELD_ITEMS_ID,
-  type StoreItem
+  type StoreItem,
 } from './api';
 import { Link } from './Link';
 import { StoreItemPreview } from './StoreItemPreview';
@@ -60,7 +61,10 @@ export const StoreItemView: FC<StoreItemViewProps> = ({
               variant="outlined"
               onClick={deleteItem}
             >
-              Delete
+              <FormattedMessage
+                id="K3r6DQ"
+                defaultMessage="Delete"
+              />
             </Button>
           )}
         </Stack>

@@ -9,7 +9,8 @@ import TextField from '@mui/material/TextField';
 import { useMutation } from '@tanstack/react-query';
 import { add } from 'date-fns';
 import { type FC } from 'react';
-import { Controller, Form, useForm } from 'react-hook-form';
+import { Controller, Form, useForm, useWatch } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import z from 'zod';
 import { addItemOptions, clearDatabaseOptions } from './api';
 import { useInstallPWA } from './context/InstallPWA';
@@ -45,7 +46,6 @@ export const AddItemForm: FC = () => {
   const {
     control,
     reset,
-    watch,
   } = useForm<AddItemFormInput, unknown, AddItemFormOutput>({
     defaultValues: {
       text: '',
@@ -54,6 +54,11 @@ export const AddItemForm: FC = () => {
     },
     resolver: zodResolver(AddItemFormSchema),
     shouldFocusError: true,
+  });
+
+  const watchedInterval = useWatch({
+    control,
+    name: 'interval',
   });
 
   const {
@@ -109,7 +114,12 @@ export const AddItemForm: FC = () => {
             const { ref, ...fieldProps } = field;
             return (
               <TextField
-                label="What do you want to remember?"
+                label={
+                  <FormattedMessage
+                    id="+3Pb5I"
+                    defaultMessage="What do you want to remember?"
+                  />
+                }
                 autoComplete="off"
                 fullWidth
                 multiline
@@ -142,7 +152,12 @@ export const AddItemForm: FC = () => {
           border: 'none',
         }}>
           <FormControl fullWidth size="small">
-            <InputLabel size="small">Add a reminder&hellip;</InputLabel>
+            <InputLabel size="small">
+              <FormattedMessage
+                id="hqW69a"
+                defaultMessage="Add a reminder…"
+              />
+            </InputLabel>
             <Controller
               name="interval"
               control={control}
@@ -151,24 +166,39 @@ export const AddItemForm: FC = () => {
                 return (
                   <Select
                     size="small"
-                    label="Add a reminder&hellip;"
+                    label={
+                      <FormattedMessage
+                        id="hqW69a"
+                        defaultMessage="Add a reminder…"
+                      />
+                    }
                     error={fieldState.error != null}
                     title={fieldState.error?.message}
                     inputRef={ref}
                     {...fieldProps}
                   >
-                    <MenuItem value={AddItemInterval.DAYS}>Day(s)</MenuItem>
-                    <MenuItem value={AddItemInterval.WEEKS}>Week(s)</MenuItem>
-                    <MenuItem value={AddItemInterval.MONTHS}>Month(s)</MenuItem>
-                    <MenuItem value={AddItemInterval.YEARS}>Year(s)</MenuItem>
-                    {/* <MenuItem value={AddItemInterval.CUSTOM}>Custom&hellip;</MenuItem> */}
+                    <MenuItem value={AddItemInterval.DAYS}>
+                      <FormattedMessage id="yfb8F1" defaultMessage="Day(s)" />
+                    </MenuItem>
+                    <MenuItem value={AddItemInterval.WEEKS}>
+                      <FormattedMessage id="JG/BCm" defaultMessage="Week(s)" />
+                    </MenuItem>
+                    <MenuItem value={AddItemInterval.MONTHS}>
+                      <FormattedMessage id="JNCob0" defaultMessage="Month(s)" />
+                    </MenuItem>
+                    <MenuItem value={AddItemInterval.YEARS}>
+                      <FormattedMessage id="Du0ILR" defaultMessage="Year(s)" />
+                    </MenuItem>
+                    {/* <MenuItem value={AddItemInterval.CUSTOM}>
+                      <FormattedMessage id="lKjjJ7" defaultMessage="Custom…" />
+                    </MenuItem> */}
                   </Select>
                 );
               }}
             />
           </FormControl>
 
-          {watch('interval') ? (
+          {watchedInterval ? (
             <FormControl fullWidth size="small">
               <Controller
                 name="count"
@@ -195,14 +225,20 @@ export const AddItemForm: FC = () => {
 
         <Stack gap={2} direction="row">
           <Button type="submit" variant="contained">
-            Save for later
+            <FormattedMessage
+              id="U/jWmk"
+              defaultMessage="Save for later"
+            />
           </Button>
 
           {isSupported && !isInstalled ? (
             <Button variant="outlined" onClick={() => {
               requestInstall();
             }}>
-              Request install
+              <FormattedMessage
+                id="PRQX/4"
+                defaultMessage="Request install"
+              />
             </Button>
           ) : null}
 
@@ -215,7 +251,10 @@ export const AddItemForm: FC = () => {
             }}
             sx={{ ml: 'auto' }}
           >
-            Clear database
+            <FormattedMessage
+              id="McJ37B"
+              defaultMessage="Clear database"
+            />
           </Button>
         </Stack>
       </Stack>

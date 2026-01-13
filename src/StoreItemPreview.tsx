@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 export type StoreItemPreviewProps = {
   data: ShareData;
@@ -53,7 +54,7 @@ export const StoreItemPreview: FC<StoreItemPreviewProps> = ({ data }) => {
 
   return (
     <Alert severity="error">
-      Not supported
+      <FormattedMessage id="+FiyOT" defaultMessage="Not supported" />
     </Alert>
   );
 };

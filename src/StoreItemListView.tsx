@@ -5,7 +5,7 @@ import { useCallback, useMemo, type FC } from 'react';
 import {
   FIELD_ITEMS_DATE_LAPSED,
   FIELD_ITEMS_ID,
-  type StoreItem
+  type StoreItem,
 } from './api';
 import { StoreItemViewWithErrorBoundary } from './StoreItemViewWithErrorBoundary';
 

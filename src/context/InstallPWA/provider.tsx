@@ -1,3 +1,4 @@
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   useCallback,
   useEffect,
@@ -8,26 +9,25 @@ import {
   type PropsWithChildren,
 } from 'react';
 import { InstallPWAContext, type InstallPWAContextType } from './context';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt?: () => Promise<'accepted' | 'dismissed'>;
 }
 
-const isRunningStandalone = (): boolean => {
+const useRunningStandalone = (): boolean => {
   const iosStandalone = (navigator as any).standalone === true;
 
   const dmStandalone =
-    useMediaQuery("(display-mode: standalone)") ?? false;
+    useMediaQuery('(display-mode: standalone)') ?? false;
 
   const dmFullscreen =
-    useMediaQuery("(display-mode: fullscreen)") ?? false;
+    useMediaQuery('(display-mode: fullscreen)') ?? false;
 
   const dmMinimalUI =
-    useMediaQuery("(display-mode: minimal-ui)") ?? false;
+    useMediaQuery('(display-mode: minimal-ui)') ?? false;
 
   return iosStandalone || dmStandalone || dmFullscreen || dmMinimalUI;
-}
+};
 
 export const InstallPWAProvider: FC<PropsWithChildren> = ({ children }) => {
   const beforeinstallpromptEventRef = useRef<BeforeInstallPromptEvent>(null);
@@ -35,7 +35,7 @@ export const InstallPWAProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isSupported, setIsSupported] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
 
-  const isStandalone = isRunningStandalone();
+  const isStandalone = useRunningStandalone();
 
   const requestInstall = useCallback(async () => {
     if (!beforeinstallpromptEventRef.current) {
