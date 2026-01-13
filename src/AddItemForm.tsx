@@ -46,6 +46,9 @@ export type AddItemFormOutput = z.output<typeof AddItemFormSchema>;
 export const AddItemForm: FC = () => {
   const {
     control,
+    formState: {
+      isValid,
+    },
     reset,
   } = useForm<AddItemFormInput, unknown, AddItemFormOutput>({
     defaultValues: {
@@ -107,7 +110,7 @@ export const AddItemForm: FC = () => {
         });
       }}
     >
-      <Paper sx={{ p: 2 }}>
+      <Paper sx={{ p: 2, border: '1px solid', borderColor: 'primary.main' }}>
         <Stack gap={2}>
           <Controller
             name="text"
@@ -226,7 +229,7 @@ export const AddItemForm: FC = () => {
           </Stack>
 
           <Stack gap={2} direction="row">
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant={isValid ? 'contained' : 'outlined'}>
               <FormattedMessage
                 id="U/jWmk"
                 defaultMessage="Save for later"
