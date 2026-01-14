@@ -65,20 +65,29 @@ export const getItem = async (id: string): Promise<StoreItem> => {
   return payload;
 };
 
+export type ListItemsOptions = {
+  sortBy?: typeof FIELD_ITEMS_DATE_ADDED | typeof FIELD_ITEMS_DATE_LAPSED,
+  order?: 'asc' | 'desc',
+};
+
 /**
  * Returns a list of all stored items in order of when they were added (newest
  * first).
  */
-export const listItems = async (): Promise<StoreItem[]> => {
+export const listItems = async ({
+  sortBy = FIELD_ITEMS_DATE_ADDED,
+  order = 'desc',
+}: ListItemsOptions = {}): Promise<StoreItem[]> => {
   const db = await getDB();
 
   const tx = db.transaction(STORE_NAME_ITEMS, 'readonly');
-  const index = tx.store.index(FIELD_ITEMS_DATE_ADDED);
+  const index = tx.store.index(sortBy);
+  const direction: IDBCursorDirection = order === 'desc' ? 'prev' : 'next';
 
   const result: StoreItem[] = [];
 
   for (
-    let cursor = await index.openCursor(null, 'prev');
+    let cursor = await index.openCursor(null, direction);
     cursor;
     cursor = await cursor.continue()
   ) {

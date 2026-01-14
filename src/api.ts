@@ -9,6 +9,7 @@ import {
   deleteItem,
   getItem,
   listItems,
+  type ListItemsOptions,
 } from './shared/db';
 import type { StoreItem } from './shared/types';
 
@@ -64,11 +65,20 @@ export const getItemOptions = (id: string) => queryOptions({
   },
 });
 
-export const listItemsQueryKey = () => ['listItems'] as const;
+export const listItemsQueryKey = (options?: ListItemsOptions) => (
+  options ?
+    (['listItems', options] as const) :
+    ['listItems'] as const
+);
 
-export const listItemsOptions = queryOptions({
-  queryKey: listItemsQueryKey(),
-  queryFn: async () => {
-    return listItems();
-  },
-});
+export const listItemsOptions = ({
+  sortBy = 'dateAdded',
+  order = 'desc',
+}: ListItemsOptions = {}) => (
+  queryOptions({
+    queryKey: listItemsQueryKey({ sortBy, order }),
+    queryFn: async () => {
+      return listItems({ sortBy, order });
+    },
+  })
+);

@@ -39,7 +39,7 @@ export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(listItemsOptions),
+    queryClient.ensureQueryData(listItemsOptions()),
   component: () => <RouteIndex />,
 });
 
