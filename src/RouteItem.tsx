@@ -1,18 +1,18 @@
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
-import type { FC } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { deleteItemOptions, FIELD_ITEMS_ID, getItemOptions } from './api';
+import { FIELD_ITEMS_DATA, getItemOptions } from './api';
 import { LinkButton } from './Link';
 import { indexRoute, itemIdRoute } from './Router';
 import { StoreItemView } from './StoreItemView';
+import { useItemActionDelete } from './use-item-action-delete';
+import { useItemActionShare } from './use-item-action-share';
 
 export const RouteItem: FC = () => {
   const { itemId } = itemIdRoute.useParams();
-  const navigate = useNavigate();
 
   const {
     isLoading,
@@ -20,9 +20,8 @@ export const RouteItem: FC = () => {
     dataUpdatedAt,
   } = useQuery(getItemOptions(itemId));
 
-  const {
-    mutateAsync: deleteItem,
-  } = useMutation(deleteItemOptions);
+  const actionDelete = useItemActionDelete();
+  const actionShare = useItemActionShare();
 
   if (isLoading) {
     return <FormattedMessage id="T4VxQN" defaultMessage="Loading…" />;
@@ -31,6 +30,8 @@ export const RouteItem: FC = () => {
   if (!item) {
     return <FormattedMessage id="JqiqNj" defaultMessage="Something went wrong" />;
   }
+
+  const itemData = item[FIELD_ITEMS_DATA];
 
   return (
     <Stack gap={4}>
@@ -47,13 +48,12 @@ export const RouteItem: FC = () => {
       <StoreItemView
         item={item}
         dataUpdatedAt={dataUpdatedAt}
-        deleteItem={async () => {
-          const itemId = item[FIELD_ITEMS_ID];
-          const onSuccess = () => navigate({ to: indexRoute.fullPath });
-          await deleteItem([itemId], {
-            onSuccess,
-          });
-        }}
+        deleteItem={() => actionDelete(itemId)}
+        shareItem={
+          navigator.canShare(itemData) ?
+            () => actionShare(itemId) :
+            undefined
+        }
       />
     </Stack>
   );

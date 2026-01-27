@@ -13,12 +13,16 @@ export type StoreItemListViewProps = {
   items?: StoreItem[];
   dataUpdatedAt: number;
   deleteItem?: (itemId: string) => void;
+  shareItem?: (itemId: string) => void;
+  viewItem?: (itemId: string) => void;
 };
 
 export const StoreItemListView: FC<StoreItemListViewProps> = ({
   items,
   dataUpdatedAt,
   deleteItem,
+  shareItem,
+  viewItem,
 }) => {
   const now = useMemo(() => new Date(), []);
 
@@ -46,9 +50,19 @@ export const StoreItemListView: FC<StoreItemListViewProps> = ({
             () => deleteItem(item[FIELD_ITEMS_ID]) :
             undefined
         }
+        shareItem={
+          shareItem ?
+            () => shareItem(item[FIELD_ITEMS_ID]) :
+            undefined
+        }
+        viewItem={
+          viewItem ?
+            () => viewItem(item[FIELD_ITEMS_ID]) :
+            undefined
+        }
       />
     </Box>
-  ), [deleteItem, dataUpdatedAt]);
+  ), [dataUpdatedAt, deleteItem, shareItem, viewItem]);
 
   return (
     <Stack gap={1}>
