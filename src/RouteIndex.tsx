@@ -1,9 +1,10 @@
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { useQuery } from '@tanstack/react-query';
 import { useState, type FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { AddItemForm } from './AddItemForm';
+import { AddItemForm } from './AddItemForm/AddItemForm';
 import { listItemsOptions } from './api';
 import { FormControlItemViewListOrder } from './FormControlItemViewListOrder';
 import { FormControlItemViewListSortBy } from './FormControlItemViewListSortBy';
@@ -27,7 +28,9 @@ export const RouteIndex: FC = () => {
 
   return (
     <Stack gap={4}>
-      <AddItemForm />
+      <Paper sx={{ p: 2, border: '1px solid', borderColor: 'primary.main' }}>
+        <AddItemForm />
+      </Paper>
 
       <Stack direction="row" gap={2}>
         <FormControlItemViewListSortBy value={sortBy} onChange={setSortBy} />
