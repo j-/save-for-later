@@ -219,6 +219,11 @@ export const AddItemForm: FC = () => {
                         error={fieldState.error != null}
                         title={fieldState.error?.message}
                         inputRef={ref}
+                        slotProps={{
+                          htmlInput: {
+                            min: 1,
+                          },
+                        }}
                         {...fieldProps}
                       />
                     );
